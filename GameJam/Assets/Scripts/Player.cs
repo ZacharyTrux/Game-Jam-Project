@@ -42,12 +42,10 @@ public class Player : MonoBehaviour
 
     public void EnableInput()
     {
-        playerInput.Enable();
         playerInput.Player.Enable();
     }
     public void DisableInput()
     {
-        playerInput.Disable();
         playerInput.Player.Disable();
     }
 }
