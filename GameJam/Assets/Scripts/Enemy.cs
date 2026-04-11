@@ -24,21 +24,29 @@ public class Enemy : MonoBehaviour{
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public EnemyState State { get; private set; }
     public EnemyType Type { get; private set; }
-    public bool isPossessed { get; set; }
+    public bool isPossessed;
 
     public LayerMask groundLayer;
     public float moveSpeed = 3.5f;
-    public float attackRange = 2f;
+    public float attackRange = 10f;
     public float attackCooldown = 1f;
     public float health = 100f;
 
     private GameObject player;
     private GameObject target;
+    private float lastAttackTime;
+    private Animator animator;
+
+    void Awake(){
+       player = GameObject.FindGameObjectWithTag("Player");
+       animator = GetComponent<Animator>();
+    }
 
     void Start(){
         State = EnemyState.Targeting;
         Type = EnemyType.Melee;
         isPossessed = false;
+        lastAttackTime = 0f;
     }
 
     void Update(){
@@ -73,22 +81,38 @@ public class Enemy : MonoBehaviour{
     private void HandleAttacking(){
         // need to implement
         Debug.Log("Attacking target");
-        if(Vector3.Distance(transform.position, target.transform.position) > attackRange){
-            State = EnemyState.Targeting;
+        if(target == null){
+            ResetState();
+            return;
+        }
+
+        float dist = Vector3.Distance(transform.position, target.transform.position);
+        if(dist <= attackRange){
+            RotateTowardsTarget(target.transform.position);
+            if(Time.time >= lastAttackTime + attackCooldown){
+                PerformAttack();
+                lastAttackTime = Time.time;
+            }
+            Debug.Log("Performing attack");
+        }
+        else{
+            ResetState();
         }
     }
 
     private void HandlePossession(){
+        target = FindNearestTarget();
+        if(target != null){
+            State = EnemyState.Attacking;
+            return;
+        }
+
         var currPoint = Waypoints.currentWaypoint;
         if(currPoint != null){ 
-            // grab the position of the waypoint and move towards it
-            Vector3 waypointPos = currPoint.transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, waypointPos, moveSpeed * Time.deltaTime);
-
-            // rotate the enemy sprite to face the waypoint
-            Vector2 direction = currPoint.transform.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            MoveTowards(currPoint.transform.position);
+        }
+        else{
+            OrbitPlayer();
         }
 
         // get mouse position
@@ -115,9 +139,17 @@ public class Enemy : MonoBehaviour{
     
 
     private GameObject FindNearestTarget(){
-        string[] targetTags = {"Player", "Ally"};
+        List<string> targetTags = new();
+        if(State == EnemyState.PlayerControlled){
+            targetTags.Add("Enemy");
+        } 
+        else{
+            targetTags.Add("Player");
+            targetTags.Add("Ally");
+        }
+
         GameObject nearestTarget = null;
-        float minDistance = Mathf.Infinity;
+        float minDistance = 15f; 
         Vector3 currPos = transform.position;
 
         foreach(string targetTag in targetTags){ // grab valid targets
@@ -135,5 +167,58 @@ public class Enemy : MonoBehaviour{
     public void MakePossesed(){
         State = EnemyState.PlayerControlled;
         gameObject.tag = "Ally";
+        isPossessed = true;
+    }
+
+    private void PerformAttack(){
+        if(target == null) return;
+
+        if(Type == EnemyType.Melee){
+            if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
+                animator.SetTrigger("Attack");
+                Debug.Log("Melee attack hits " + target.name);
+                //target.Health.TakeDamage(10f);
+            }
+        }
+        // else if(Type == EnemyType.Ranged){
+        //     // Instantiate projectile towards target
+        //     Debug.Log("Ranged attack towards " + target.name);
+        //     // GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        //     // projectile.GetComponent<Projectile>().Initialize(target.transform);
+        // }
+        // else if(Type == EnemyType.Brute){
+        //     // Stronger melee attack with knockback
+        //     if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
+        //         Debug.Log("Brute attack hits " + target.name);
+        //         // target.GetComponent<Health>()?.TakeDamage(20f);
+        //         // Apply knockback logic here
+        //     }
+        // }
+    }
+
+    public void MoveTowards(Vector3 position){
+        transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
+        RotateTowardsTarget(position);
+    }
+
+    private void RotateTowardsTarget(Vector3 position){
+        if(target == null) return;
+
+        Vector2 direction = position - transform.position;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    private void OrbitPlayer(){
+        if(player == null) return;
+
+        Vector3 direction = (transform.position - player.transform.position).normalized;
+        Vector3 orbitPosition = player.transform.position + direction * 1f; // 1f is orbit radius
+        MoveTowards(orbitPosition);
+    }
+
+    private void ResetState(){
+        State = isPossessed ? EnemyState.PlayerControlled : EnemyState.Targeting;
     }
 }
