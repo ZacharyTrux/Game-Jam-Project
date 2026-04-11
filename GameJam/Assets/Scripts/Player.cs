@@ -6,7 +6,8 @@ public class Player : MonoBehaviour
     public static Player Instance { get; private set; }
 
     [Header("Movement")]
-    public float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float smoothTime = 0.1f;
 
     [Header("Mind Control")]
     public float controlRange = 8f;
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
     private InputSystem_Actions playerInput;
     private Rigidbody2D rb;
     private Vector2 moveInput;
+    private Vector2 currentVelocity;
     private Camera mainCam;
 
     private void Awake()
@@ -42,14 +44,13 @@ public class Player : MonoBehaviour
         playerInput.Player.Attack.performed -= OnPushBack;
     }
 
-    void Update(){
-        Vector2 raw = playerInput.Player.Move.ReadValue<Vector2>();
-        moveInput = raw.normalized;
+    void Update()
+    {
+        Vector2 targetInput = playerInput.Player.Move.ReadValue<Vector2>().normalized;
+        moveInput = Vector2.SmoothDamp(moveInput, targetInput, ref currentVelocity, smoothTime);
+        transform.Translate(moveSpeed * Time.deltaTime * moveInput);
     }
 
-    void FixedUpdate(){
-        rb.linearVelocity = moveInput * moveSpeed;
-    }
 
     private void OnTryPossess(InputAction.CallbackContext ctx)
     {
