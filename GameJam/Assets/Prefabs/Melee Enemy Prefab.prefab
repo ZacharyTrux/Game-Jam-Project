@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 308029491338888681}
   - component: {fileID: 6605685763871353385}
   - component: {fileID: 1954851838979649507}
-  - component: {fileID: 340144472723104573}
   - component: {fileID: 1502656260175877403}
+  - component: {fileID: 2394160883406259996}
   m_Layer: 6
   m_Name: Melee Enemy Prefab
   m_TagString: Enemy
@@ -110,26 +110,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &340144472723104573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 93505995448104935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7cb03ae972ffaa4990ee9b27448a579, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  isPossessed: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  moveSpeed: 3.5
-  attackRange: 2.5
-  attackCooldown: 1
-  health: 100
 --- !u!95 &1502656260175877403
 Animator:
   serializedVersion: 7
@@ -152,6 +132,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2394160883406259996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93505995448104935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a6260085ec5594f97f28b6bf30c511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
+  isPossessed: 0
+  canBePossessed: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  moveSpeed: 3.5
+  attackRange: 1.5
+  attackCooldown: 1
+  slotWeight: 1
+  health: 100
 --- !u!1 &345736798926345472
 GameObject:
   m_ObjectHideFlags: 0
