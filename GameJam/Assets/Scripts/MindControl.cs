@@ -42,7 +42,6 @@ public class MindControl : MonoBehaviour
         if (!CanControl) return false;
 
         controlledEnemies.Add(enemy);
-        enemy.isPossessed = true;
         enemy.MakePossesed();
         return true;
     }

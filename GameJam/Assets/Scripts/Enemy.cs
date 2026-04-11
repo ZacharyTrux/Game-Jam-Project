@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public enum EnemyState{
     Targeting,
@@ -34,7 +35,6 @@ public class Enemy : MonoBehaviour{
     private GameObject player;
 
     void Start(){
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<GameObject>();
         State = EnemyState.Targeting;
         Type = EnemyType.Melee;
         isPossessed = false;
@@ -65,8 +65,6 @@ public class Enemy : MonoBehaviour{
 
     private void HandleTargeting(GameObject target){
         // Move towards the target and check for attack range
-        agent.isStopped = false;
-        agent.SetDestination(target.transform.position);
 
         if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
             State = EnemyState.Attacking;
@@ -78,14 +76,18 @@ public class Enemy : MonoBehaviour{
     }
 
     private void HandlePossession(){
-        agent.isStopped = true;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if(Physics.Raycast(ray, out hit, 100f, groundLayer)){
-            Vector3 destination = hit.point;
-            agent.SetDestination(destination);
-        }
-        // Allow player to control the enemy's movement and attacks
+        // get mouse position
+        Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        mousePos.z = 0; 
+
+        // move towards mouse position
+        transform.position = Vector3.Lerp(transform.position, mousePos, moveSpeed * Time.deltaTime);
+
+        // 3. Rotation (Optional: Make the enemy look at the mouse)
+        Vector2 direction = mousePos - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     private void HandleDeath(){

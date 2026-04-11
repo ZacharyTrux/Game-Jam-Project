@@ -34,9 +34,9 @@ public class Player : MonoBehaviour
         playerInput.Player.Attack.performed += OnTryPossess;
     }
 
-    void OnDestroy(){
-        playerInput.Player.Attack.performed -= OnTryPossess;
-    }
+    //void OnDestroy(){
+    //    playerInput.Player.Attack.performed -= OnTryPossess;
+    //}
 
     void Update(){
         Vector2 raw = playerInput.Player.Move.ReadValue<Vector2>();
