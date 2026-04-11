@@ -32,6 +32,7 @@ public abstract class Enemy : MonoBehaviour{
     public float attackCooldown = 1f;
     public int slotWeight = 1;
     public float health = 100f;
+    public bool isStunned = false;
 
     protected GameObject player;
     protected GameObject target;
@@ -53,6 +54,11 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected virtual void Update(){
+        if(isStunned) return;
+        else if(Time.time >= 2f){
+            isStunned = false;
+        }
+
         switch (State){
             case EnemyState.Targeting:
                 DecideTarget();
@@ -208,7 +214,7 @@ public abstract class Enemy : MonoBehaviour{
                 State = EnemyState.Dying;
                 // Play death animation or effects here
             }
-        }
+        }        
     }
 
 /*

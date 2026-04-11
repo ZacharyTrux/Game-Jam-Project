@@ -895,7 +895,7 @@ GameObject:
   - component: {fileID: 808393575}
   - component: {fileID: 808393581}
   m_Layer: 0
-  m_Name: Player (1)
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -991,7 +991,7 @@ MonoBehaviour:
   enemyWaypoint: {fileID: 543722059626214156, guid: 9c1e2a8f33c4d4a47a6decfbadb5cc91, type: 3}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 64
   waypointDuration: 5
 --- !u!50 &808393578
 Rigidbody2D:
@@ -1038,7 +1038,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 65
-  pushBackEffect: {fileID: 0}
+  pushBackEffect: {fileID: 2969661899828648100, guid: 1d3bc3c9f978a6b4caf60b8d9aa7350a, type: 3}
 --- !u!212 &808393580
 SpriteRenderer:
   serializedVersion: 2
@@ -1128,7 +1128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &879323436
 Grid:
   m_ObjectHideFlags: 0
@@ -1763,9 +1763,107 @@ CompositeCollider2D:
   m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths: []
+  m_ColliderPaths:
+  - m_Collider: {fileID: 1602632818}
+    m_ColliderPaths:
+    - - X: 240000000
+        Y: 280000000
+      - X: -270000000
+        Y: 280000000
+      - X: -270000000
+        Y: -230000000
+      - X: 240000000
+        Y: -230000000
+    - - X: -30000000
+        Y: -220000000
+      - X: -30000000
+        Y: -190000000
+      - X: -240000000
+        Y: -190000000
+      - X: -240000000
+        Y: -20000000
+      - X: -230000000
+        Y: -20000000
+      - X: -230000000
+        Y: 90000000
+      - X: -240000000
+        Y: 90000000
+      - X: -240000000
+        Y: 170000000
+      - X: -250000000
+        Y: 170000000
+      - X: -250000000
+        Y: 210000000
+      - X: -240000000
+        Y: 210000000
+      - X: -240000000
+        Y: 230000000
+      - X: -230000000
+        Y: 230000000
+      - X: -230000000
+        Y: 240000000
+      - X: -130000000
+        Y: 240000000
+      - X: -130000000
+        Y: 230000000
+      - X: 30000000
+        Y: 230000000
+      - X: 30000000
+        Y: 240000000
+      - X: 210000000
+        Y: 240000000
+      - X: 210000000
+        Y: 150000000
+      - X: 200000000
+        Y: 150000000
+      - X: 200000000
+        Y: 30000000
+      - X: 210000000
+        Y: 30000000
+      - X: 210000000
+        Y: -160000000
+      - X: 220000000
+        Y: -160000000
+      - X: 220000000
+        Y: -190000000
+      - X: 10000000
+        Y: -190000000
+      - X: 10000000
+        Y: -220000000
   m_CompositePaths:
-    m_Paths: []
+    m_Paths:
+    - - {x: 23.999971, y: -23}
+      - {x: 23.999971, y: 28}
+      - {x: -27, y: 27.999971}
+      - {x: -26.999971, y: -23}
+    - - {x: 1, y: -21.999971}
+      - {x: -3, y: -21.999971}
+      - {x: -3.0000293, y: -19}
+      - {x: -24, y: -18.999971}
+      - {x: -23.999971, y: -2}
+      - {x: -23, y: -1.9999708}
+      - {x: -23.000029, y: 9}
+      - {x: -24, y: 9.00003}
+      - {x: -24.000029, y: 17}
+      - {x: -25, y: 17.000029}
+      - {x: -24.999971, y: 21}
+      - {x: -24, y: 21.000029}
+      - {x: -23.999971, y: 23}
+      - {x: -23, y: 23.000029}
+      - {x: -22.999971, y: 24}
+      - {x: -13, y: 23.999971}
+      - {x: -12.99997, y: 23}
+      - {x: 3, y: 23.000029}
+      - {x: 3.0000293, y: 24}
+      - {x: 21, y: 23.999971}
+      - {x: 20.999971, y: 15}
+      - {x: 20, y: 14.999971}
+      - {x: 20.000029, y: 3}
+      - {x: 21, y: 2.9999707}
+      - {x: 21.000029, y: -16}
+      - {x: 22, y: -16.000029}
+      - {x: 21.999971, y: -19}
+      - {x: 1, y: -19.000029}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
