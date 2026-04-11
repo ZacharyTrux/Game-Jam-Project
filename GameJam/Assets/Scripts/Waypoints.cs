@@ -3,28 +3,34 @@ using UnityEngine.InputSystem;
 
 public class Waypoints : MonoBehaviour
 {
-    // Waypoint Sprites
+    // Set in inspector
     public GameObject locationWaypoint;
     public GameObject enemyWaypoint;
+    public LayerMask enemyLayer;
 
     // Update is called once per frame
     void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current.leftButton.wasPressedThisFrame) // Replace this with waypoint keybind
         {
-            Vector3 mousePos = Mouse.current.position.ReadValue();
-            mousePos.z = 10f;
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            SpawnLocationWaypoint(worldPos);
+            ClickDetector();
         }
         
     }
 
-    public void SpawnLocationWaypoint(Vector3 spawnPoint)
+    void ClickDetector()
     {
-        spawnPoint.z = 0;
-        GameObject newPoint = Instantiate(locationWaypoint, spawnPoint, Quaternion.identity);
-        Destroy(newPoint, 5f);
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 0f, enemyLayer);
+        if (hit.collider != null)
+        {
+            GameObject waypoint = Instantiate(enemyWaypoint, hit.point, Quaternion.identity);
+            Destroy(waypoint, 5f);
+        } 
+        else
+        {
+            GameObject waypoint = Instantiate(locationWaypoint, hit.point, Quaternion.identity);
+            Destroy(waypoint, 5f);
+        }
     }
-
 }
