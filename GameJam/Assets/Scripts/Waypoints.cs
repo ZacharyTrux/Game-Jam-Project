@@ -26,7 +26,7 @@ public class Waypoints : MonoBehaviour{
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 0f, enemyLayer);
 
-        if (hit.collider != null){
+        if (hit.collider != null && !hit.collider.gameObject.CompareTag("Ally")){
             GameObject waypoint = Instantiate(enemyWaypoint, hit.point, Quaternion.identity);
             waypoint.transform.SetParent(hit.collider.transform);
             currentWaypoint = waypoint;
