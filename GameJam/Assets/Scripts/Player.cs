@@ -25,10 +25,8 @@ public class Player : MonoBehaviour
     private Camera mainCam;
 
     private float health = 100f;
-
     private SpriteRenderer spriteRenderer;
-    private float lastHorizontal = 0f; // defaults to left facing
-
+    private float lastHorizontal = 0f;
 
     private void Awake()
     {
@@ -41,7 +39,8 @@ public class Player : MonoBehaviour
         mainCam = Camera.main;
     }
 
-    void Start(){
+    void Start()
+    {
         playerInput.Enable();
         playerInput.Player.Enable();
         playerInput.Player.Possess.performed += OnTryPossess;
@@ -49,7 +48,8 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void OnDestroy(){
+    void OnDestroy()
+    {
         playerInput.Player.Attack.performed -= OnPushBack;
     }
 
@@ -62,18 +62,16 @@ public class Player : MonoBehaviour
         spriteRenderer.flipX = (lastHorizontal > 0);
     }
 
-
     private void OnTryPossess(InputAction.CallbackContext ctx)
     {
         if (MindControl.Instance == null || !MindControl.Instance.CanControl) return;
 
         Vector2 worldPos = mainCam.ScreenToWorldPoint(
             UnityEngine.InputSystem.Mouse.current.position.ReadValue()
-            );
+        );
         RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero, 0f, enemyLayer);
 
         if (hit.collider == null) return;
-
         if (!hit.collider.TryGetComponent<Enemy>(out var enemy)) return;
 
         if (enemy.Type == EnemyType.Boss || enemy.Type == EnemyType.Elite)
@@ -90,11 +88,14 @@ public class Player : MonoBehaviour
         }
 
         MindControl.Instance.TryControl(enemy);
+        SoundManager.Instance?.PlayPossess(); // plays possess sound
     }
 
-    private void OnPushBack(InputAction.CallbackContext ctx){
+    private void OnPushBack(InputAction.CallbackContext ctx)
+    {
         GameObject attack = Instantiate(pushBackEffect, transform.position, Quaternion.identity);
         Destroy(attack, 3f);
+        SoundManager.Instance?.PlayPushBack(); // plays pushback sound
     }
 
     public void EnableInput()  => playerInput.Player.Enable();
@@ -106,12 +107,15 @@ public class Player : MonoBehaviour
         moveInput = Vector2.zero;
     }
 
-    public void OnTriggerEnter2D(Collider2D collision){
-        if(collision.gameObject.CompareTag("Attack")){
-            health -= 20f; 
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Attack"))
+        {
+            health -= 20f;
             Debug.Log("Player damaged with remaining health: " + health);
         }
-        if(health <= 0f){
+        if (health <= 0f)
+        {
             Destroy(gameObject);
         }
     }
@@ -121,9 +125,8 @@ public class Player : MonoBehaviour
         // Hook into your health system when ready
     }
 
-    // Adding the method in player file for XP method - needs more work - Sarun
     public void IncreaseMoveSpeed(float amount)
     {
-           moveSpeed += amount; 
+        moveSpeed += amount;
     }
 }

@@ -131,6 +131,7 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected virtual void HandleDeath(){
+        SoundManager.Instance?.PlayEnemyDeath();
         // Play death animation or effects here
         Destroy(gameObject);
     }

@@ -58,10 +58,13 @@ public class MindControl : MonoBehaviour
         }
     }
 
-    private void TriggerVulnerability(){
-        IsVulnerable = true;
-        vulnerabilityTimer = vulnerabilityDuration;
+    private void TriggerVulnerability()
+    {
+    IsVulnerable = true;
+    vulnerabilityTimer = vulnerabilityDuration;
+    SoundManager.Instance?.PlayReleased();
     }
+    
 
     public void increaseMaxControl(int num){
         maxControlledEnemies += num;
