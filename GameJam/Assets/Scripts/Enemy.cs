@@ -81,8 +81,6 @@ public class Enemy : MonoBehaviour{
     }
 
     private void HandleAttacking(){
-        // need to implement
-        Debug.Log("Attacking target");
         if(target == null){
             ResetState();
             return;
@@ -98,7 +96,6 @@ public class Enemy : MonoBehaviour{
                 PerformAttack();
                 lastAttackTime = Time.time;
             }
-            Debug.Log("Performing attack");
         }
         else{
             ResetState();
@@ -184,7 +181,6 @@ public class Enemy : MonoBehaviour{
         if(Type == EnemyType.Melee){
             if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
                 animator.SetTrigger("Attack");
-                Debug.Log("Melee attack hits " + target.name);
                 //target.Health.TakeDamage(10f);
             }
         }
@@ -221,8 +217,17 @@ public class Enemy : MonoBehaviour{
     private void OrbitPlayer(){
         if(player == null) return;
 
-        Vector3 orbitDirection = groupOffset + player.transform.position;
-        MoveTowards(orbitDirection);
+        float angle = Time.time * 2f + (gameObject.GetInstanceID() * 0.5f);
+
+        // 2. Calculate the X and Y offsets using Sine and Cosine
+        float x = Mathf.Cos(angle) * 2.5f;
+        float y = Mathf.Sin(angle) * 2.5f;
+
+        // 3. Create the target position relative to the player
+        Vector3 orbitTarget = player.transform.position + new Vector3(x, y, 0);
+
+        // 4. Move towards that dynamic rotating point
+        MoveTowards(orbitTarget);
     }
 
     private void ResetState(){
@@ -231,8 +236,18 @@ public class Enemy : MonoBehaviour{
 
     public void OnTriggerEnter2D(Collider2D collision){
         if(collision.gameObject.CompareTag("Attack") && State != EnemyState.Dying){
-            health -= 20f; // Example damage value
-            Debug.Log("Remaining health: " + health);
+            GameObject attacker = collision.transform.root.gameObject;
+            Debug.Log("Hit by: " + attacker.name);
+            if(gameObject.CompareTag("Ally")){
+                if (attacker.CompareTag("Enemy")){
+                    health -= 20f;
+                }
+            }
+            else if(gameObject.CompareTag("Enemy")){
+                if(attacker.CompareTag("Player") || attacker.CompareTag("Ally")){
+                    health -= 20f;
+                }
+            }
             if(health <= 0f){
                 State = EnemyState.Dying;
                 // Play death animation or effects here

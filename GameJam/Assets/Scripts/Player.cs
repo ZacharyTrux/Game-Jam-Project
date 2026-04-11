@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 currentVelocity;
     private Camera mainCam;
+    private float health = 100f;
 
     private void Awake()
     {
@@ -94,6 +95,16 @@ public class Player : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
         moveInput = Vector2.zero;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision){
+        if(collision.gameObject.CompareTag("Attack")){
+            health -= 20f; 
+            Debug.Log("Player damaged with remaining health: " + health);
+        }
+        if(health <= 0f){
+            Destroy(gameObject);
+        }
     }
 
     public void RegenerateHealth(float amount)
