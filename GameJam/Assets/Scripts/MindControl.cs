@@ -66,4 +66,12 @@ public class MindControl : MonoBehaviour
     public void increaseMaxControl(int num){
         maxControlledEnemies += num;
     }
+
+// for the level up feature 
+    public void ResetVulnerability()
+{
+    IsVulnerable = false;
+    vulnerabilityTimer = 0f;
+    OnVulnerabilityTick?.Invoke(0f);
+}
 }
