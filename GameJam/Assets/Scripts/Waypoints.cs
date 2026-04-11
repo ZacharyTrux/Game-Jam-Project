@@ -28,6 +28,7 @@ public class Waypoints : MonoBehaviour{
 
         if (hit.collider != null){
             GameObject waypoint = Instantiate(enemyWaypoint, hit.point, Quaternion.identity);
+            waypoint.transform.SetParent(hit.collider.transform);
             currentWaypoint = waypoint;
         } 
         else{
