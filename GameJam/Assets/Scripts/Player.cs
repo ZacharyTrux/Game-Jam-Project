@@ -100,4 +100,10 @@ public class Player : MonoBehaviour
     {
         // Hook into your health system when ready
     }
+
+    // Adding the method in player file for XP method - needs more work - Sarun
+    public void IncreaseMoveSpeed(float amount)
+    {
+           moveSpeed += amount; 
+    }
 }

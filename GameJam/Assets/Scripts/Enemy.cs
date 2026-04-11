@@ -125,6 +125,7 @@ public class Enemy : MonoBehaviour{
     }
 
     private void HandleDeath(){
+        XPManager.Instance?.AddKill();      // By Sarun for XP gain on kill
         // Play death animation and disable enemy
         GameObject.Destroy(gameObject, 2f);
     }
