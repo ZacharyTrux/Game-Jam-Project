@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MindControl : MonoBehaviour
@@ -6,7 +7,6 @@ public class MindControl : MonoBehaviour
     public static MindControl Instance { get; private set; }
 
     [Header("Control Settings")]
-    public float controlDuration = 10f;
     public float vulnerabilityDuration = 10f;
 
     public bool IsVulnerable { get; private set; } = false;
@@ -32,19 +32,18 @@ public class MindControl : MonoBehaviour
         vulnerabilityTimer -= Time.deltaTime;
         OnVulnerabilityTick?.Invoke(vulnerabilityTimer / vulnerabilityDuration);
 
-        if (vulnerabilityTimer <= 0f)
-        {
+        if (vulnerabilityTimer <= 0f){
             IsVulnerable = false;
             OnVulnerabilityTick?.Invoke(0f);
         }
     }
 
-    public bool TryControl(Enemy enemy)
-    {
+    public bool TryControl(Enemy enemy){
         if (!CanControl) return false;
 
         controlledEnemies.Add(enemy);
-        // enemy.BecomePossessed(controlDuration);  //Needs to be implemented in EnemyScript
+        enemy.isPossessed = true;
+        enemy.MakePossesed();
         return true;
     }
 
