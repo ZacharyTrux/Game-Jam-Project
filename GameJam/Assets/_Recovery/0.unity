@@ -311,7 +311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 93505995448104935, guid: 5277cc7718b995b4d9b01705cc38aefa, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 308029491338888681, guid: 5277cc7718b995b4d9b01705cc38aefa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -537,7 +537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 262449256942143733, guid: a8772e984816fe041afbc4bec74c301a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.69
+      value: -0.07
       objectReference: {fileID: 0}
     - target: {fileID: 262449256942143733, guid: a8772e984816fe041afbc4bec74c301a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -574,10 +574,6 @@ PrefabInstance:
     - target: {fileID: 8730726245684181756, guid: a8772e984816fe041afbc4bec74c301a, type: 3}
       propertyPath: m_Name
       value: Ranged Enemy Prefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 8730726245684181756, guid: a8772e984816fe041afbc4bec74c301a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -904,7 +900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 93505995448104935, guid: 5277cc7718b995b4d9b01705cc38aefa, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 93505995448104935, guid: 5277cc7718b995b4d9b01705cc38aefa, type: 3}
       propertyPath: m_TagString

@@ -187,6 +187,27 @@ public abstract class Enemy : MonoBehaviour{
         State = isPossessed ? EnemyState.PlayerControlled : EnemyState.Targeting;
     }
 
+    public void OnTriggerEnter2D(Collider2D collision){
+        if(collision.gameObject.CompareTag("Attack") && State != EnemyState.Dying){
+            GameObject attacker = collision.transform.root.gameObject;
+            Debug.Log("Hit by: " + attacker.name);
+            if(gameObject.CompareTag("Ally")){
+                if (attacker.CompareTag("Enemy")){
+                    health -= 20f;
+                }
+            }
+            else if(gameObject.CompareTag("Enemy")){
+                if(attacker.CompareTag("Player") || attacker.CompareTag("Ally")){
+                    health -= 20f;
+                }
+            }
+            if(health <= 0f){
+                State = EnemyState.Dying;
+                // Play death animation or effects here
+            }
+        }
+    }
+
 /*
     private void HandleTargeting(GameObject target){
         // Move towards the target and check for attack range

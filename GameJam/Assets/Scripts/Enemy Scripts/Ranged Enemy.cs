@@ -60,19 +60,6 @@ public class RangedEnemy : Enemy {
         MoveTowards(player.transform.position + orbitOffset);
     }
 
-    public void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("Attack") && State != EnemyState.Dying) {
-            GameObject attacker = collision.transform.root.gameObject;
-            
-            bool isFriendlyFire = (gameObject.CompareTag("Ally") && !attacker.CompareTag("Enemy")) ||
-                                (gameObject.CompareTag("Enemy") && attacker.CompareTag("Enemy"));
-
-            if (!isFriendlyFire) {
-                TakeDamage(20f);
-            }
-        }
-    }
-
     private void PerformAttack(){
         if(target == null) return;
         if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
