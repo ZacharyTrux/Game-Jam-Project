@@ -115,7 +115,7 @@ public abstract class Enemy : MonoBehaviour{
         }
 
         GameObject nearestTarget = null;
-        float minDistance = 15f; 
+        float minDistance = 50; 
         Vector3 currPos = transform.position;
 
         foreach(string targetTag in targetTags){ // grab valid targets
@@ -127,6 +127,7 @@ public abstract class Enemy : MonoBehaviour{
                 }
             }
         }
+        print(nearestTarget);
         return nearestTarget;
     }
 

@@ -2,9 +2,11 @@ using System;
 using UnityEngine;
 
 public class MeleeEnemy : Enemy {
-    public MeleeEnemy() {
+    protected override void Awake() {
+        base.Awake();
         Type = EnemyType.Melee;
         slotWeight = 1;
+        Debug.Log("melee enemy awaked " + State);
     }
 
     protected override void MoveTowards(Vector3 position) {

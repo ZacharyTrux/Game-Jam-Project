@@ -437,7 +437,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2668270888775064591}
   - component: {fileID: 2498387003755088752}
-  - component: {fileID: 6907949173747948201}
   m_Layer: 0
   m_Name: Attack Range
   m_TagString: Attack
@@ -510,20 +509,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.7072842, y: 1.9001014}
   m_EdgeRadius: 0
---- !u!114 &6907949173747948201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3160312795678734128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e2480698a5e3784a82beb579c168bfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeAttack
-  damage: 20
-  ownerTag: Enemy
 --- !u!1 &4093893629092943271
 GameObject:
   m_ObjectHideFlags: 0
