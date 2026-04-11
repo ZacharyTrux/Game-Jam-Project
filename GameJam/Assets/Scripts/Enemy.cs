@@ -25,14 +25,16 @@ public class Enemy : MonoBehaviour{
     public EnemyType Type { get; private set; }
     public bool isPossessed { get; set; }
 
-    public Transform player;
     public NavMeshAgent agent;
     public LayerMask groundLayer;
     public float moveSpeed = 3.5f;
     public float attackRange = 2f;
     public float attackCooldown = 1f;
 
+    private GameObject player;
+
     void Start(){
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<GameObject>();
         State = EnemyState.Targeting;
         Type = EnemyType.Melee;
         isPossessed = false;
@@ -123,13 +125,7 @@ public class Enemy : MonoBehaviour{
     }
 
     public void MakePossesed(){
-        if(isPossessed){
-            State = EnemyState.PlayerControlled;
-            gameObject.tag = "Ally";
-        }
-        else{
-            State = EnemyState.Targeting;
-            gameObject.tag = "Enemy";
-        }
+        State = EnemyState.PlayerControlled;
+        gameObject.tag = "Ally";
     }
 }

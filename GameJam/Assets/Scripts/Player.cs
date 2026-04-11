@@ -28,26 +28,22 @@ public class Player : MonoBehaviour
         mainCam = Camera.main;
     }
 
-    void Start()
-    {
+    void Start(){
         playerInput.Enable();
         playerInput.Player.Enable();
         playerInput.Player.Attack.performed += OnTryPossess;
     }
 
-    void OnDestroy()
-    {
+    void OnDestroy(){
         playerInput.Player.Attack.performed -= OnTryPossess;
     }
 
-    void Update()
-    {
+    void Update(){
         Vector2 raw = playerInput.Player.Move.ReadValue<Vector2>();
         moveInput = raw.normalized;
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate(){
         rb.linearVelocity = moveInput * moveSpeed;
     }
 
