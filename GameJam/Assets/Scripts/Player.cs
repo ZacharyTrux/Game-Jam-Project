@@ -72,8 +72,7 @@ public class Player : MonoBehaviour
 
         if (hit.collider == null) return;
 
-        Enemy enemy = hit.collider.GetComponent<Enemy>();
-        if (enemy == null) return;
+        if (!hit.collider.TryGetComponent<Enemy>(out var enemy)) return;
 
         if (enemy.Type == EnemyType.Boss || enemy.Type == EnemyType.Elite)
         {
