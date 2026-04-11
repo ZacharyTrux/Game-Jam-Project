@@ -3,22 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-<<<<<<< Updated upstream
   tags: []
-=======
-  tags:
-  - Enemy
-  - Ally
->>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
-  - Enemy
-  - Projectile
+  - 
+  - 
   - 
   - 
   - 

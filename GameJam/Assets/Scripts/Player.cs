@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
 
         if (hit.collider == null) return;
 
-        EnemyScript enemy = hit.collider.GetComponent<EnemyScript>();
+        Enemy enemy = hit.collider.GetComponent<Enemy>();
         if (enemy == null) return;
 
         if (enemy.Type == EnemyType.Boss || enemy.Type == EnemyType.Elite)

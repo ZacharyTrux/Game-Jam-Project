@@ -12,7 +12,7 @@ public class MindControl : MonoBehaviour
     public bool IsVulnerable { get; private set; } = false;
     public bool CanControl => !IsVulnerable && controlledEnemies.Count == 0;
 
-    private List<EnemyScript> controlledEnemies = new();
+    private List<Enemy> controlledEnemies = new();
     private float vulnerabilityTimer = 0f;
 
     // Events for HUD / player visuals to subscribe to
@@ -39,7 +39,7 @@ public class MindControl : MonoBehaviour
         }
     }
 
-    public bool TryControl(EnemyScript enemy)
+    public bool TryControl(Enemy enemy)
     {
         if (!CanControl) return false;
 
@@ -48,7 +48,7 @@ public class MindControl : MonoBehaviour
         return true;
     }
 
-    public void OnEnemyFreed(EnemyScript enemy)
+    public void OnEnemyFreed(Enemy enemy)
     {
         controlledEnemies.Remove(enemy);
 
