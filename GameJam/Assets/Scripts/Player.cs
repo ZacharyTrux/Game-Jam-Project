@@ -53,11 +53,11 @@ public class Player : MonoBehaviour
         playerInput.Player.Attack.performed -= OnPushBack;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Vector2 targetInput = playerInput.Player.Move.ReadValue<Vector2>().normalized;
         moveInput = Vector2.SmoothDamp(moveInput, targetInput, ref currentVelocity, smoothTime);
-        transform.Translate(moveSpeed * Time.deltaTime * moveInput);
+        rb.linearVelocity = moveSpeed * moveInput;
         if (moveInput.x != 0) lastHorizontal = moveInput.x;
         spriteRenderer.flipX = (lastHorizontal > 0);
     }
