@@ -29,7 +29,11 @@ public class Waypoints : MonoBehaviour
         } 
         else
         {
-            GameObject waypoint = Instantiate(locationWaypoint, hit.point, Quaternion.identity);
+            Vector3 screenPos = Mouse.current.position.ReadValue();
+            screenPos.z = 10f;
+            Vector3 spawnPos = Camera.main.ScreenToWorldPoint(screenPos);
+            spawnPos.z = 0;
+            GameObject waypoint = Instantiate(locationWaypoint, spawnPos, Quaternion.identity);
             Destroy(waypoint, 5f);
         }
     }
