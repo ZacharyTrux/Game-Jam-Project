@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 2050401750}
   - component: {fileID: 2050401752}
   - component: {fileID: 2050401749}
+  - component: {fileID: 2050401753}
   m_Layer: 0
   m_Name: Player Prefab
   m_TagString: Player
@@ -441,6 +442,23 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 65
+--- !u!114 &2050401753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050401746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424d95692d1ba31439d7f525f6d88fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Waypoints
+  locationWaypoint: {fileID: 425339151816767842, guid: d94643be1cfdddd4a92f16d1fb17cd4f, type: 3}
+  enemyWaypoint: {fileID: 543722059626214156, guid: 9c1e2a8f33c4d4a47a6decfbadb5cc91, type: 3}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &2058871679
 GameObject:
   m_ObjectHideFlags: 0

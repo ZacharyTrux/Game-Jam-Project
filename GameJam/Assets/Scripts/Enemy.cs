@@ -76,18 +76,27 @@ public class Enemy : MonoBehaviour{
     }
 
     private void HandlePossession(){
+        var currPoint = Waypoints.currentWaypoint;
+        if(currPoint != null){ // move towards waypoint if it exists 
+            // grab the position of the waypoint and move towards it
+            Vector3 waypointPos = currPoint.transform.position;
+            transform.position = Vector3.Lerp(transform.position, waypointPos, moveSpeed * Time.deltaTime);
+
+            // rotate the enemy sprite to face the waypoint
+            Vector2 direction = currPoint.transform.position - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+
         // get mouse position
-        Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
-        mousePos.z = 0; 
+        // Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+        // Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        // mousePos.z = 0; 
 
         // move towards mouse position
-        transform.position = Vector3.Lerp(transform.position, mousePos, moveSpeed * Time.deltaTime);
+        //transform.position = Vector3.Lerp(transform.position, mousePos, moveSpeed * Time.deltaTime);
 
-        // 3. Rotation (Optional: Make the enemy look at the mouse)
-        Vector2 direction = mousePos - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        
     }
 
     private void HandleDeath(){
