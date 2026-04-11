@@ -131,8 +131,9 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected virtual void HandleDeath(){
+        XPManager.Instance?.AddKill();  // Increment kill count for XP system
         SoundManager.Instance?.PlayEnemyDeath();
-        // Play death animation or effects here
+        SoundManager.Instance?.PlayKill();  // Play kill sound effect
         Destroy(gameObject);
     }
 

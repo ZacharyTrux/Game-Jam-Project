@@ -4,13 +4,35 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
-    [Header("Audio Clips")]
+    [Header("Music")]
+    public AudioClip backgroundMusic;
+    public AudioClip bossMusicClip;
+    public AudioClip winMusic;
+    public AudioClip loseMusic;
+
+    [Header("Player SFX")]
     public AudioClip possessSound;
     public AudioClip releasedSound;
     public AudioClip pushBackSound;
+
+    [Header("Progression SFX")]
     public AudioClip levelUpSound;
+    public AudioClip killSound;
+
+    [Header("Power Up SFX")]
+    public AudioClip powerUpControlSound;    
+    public AudioClip powerUpSpeedSound;      
+    public AudioClip powerUpDurationSound;   
+    public AudioClip powerUpXPSound;         
+    public AudioClip powerUpCooldownSound;   
+    public AudioClip powerUpPushbackSound;   
+
+    [Header("Enemy SFX")]
+    public AudioClip meleeAttackSound;
+    public AudioClip rangedAttackSound;
+    public AudioClip tankAttackSound;
+    public AudioClip bossAttackSound;
     public AudioClip enemyDeathSound;
-    public AudioClip bossMusicClip;
 
     [Header("Settings")]
     [Range(0f, 1f)] public float sfxVolume = 1f;
@@ -21,16 +43,21 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null) { Destroy(gameObject); return; }
-        Instance = this;
-        DontDestroyOnLoad(this);
+    if (Instance != null) { Destroy(gameObject); return; }
+    Instance = this;
+    DontDestroyOnLoad(this);
+    }
 
-        sfxSource = gameObject.AddComponent<AudioSource>();
-        musicSource = gameObject.AddComponent<AudioSource>();
+void Start()
+    {
+    sfxSource = gameObject.AddComponent<AudioSource>();
+    musicSource = gameObject.AddComponent<AudioSource>();
 
-        musicSource.loop = true;
-        musicSource.volume = musicVolume;
-        sfxSource.volume = sfxVolume;
+    musicSource.loop = true;
+    musicSource.volume = musicVolume;
+    sfxSource.volume = sfxVolume;
+
+    PlayMusic(backgroundMusic);
     }
 
     void OnEnable()
@@ -45,20 +72,63 @@ public class SoundManager : MonoBehaviour
         LevelUpScreen.OnLevelUpConfirmed -= PlayLevelUp;
     }
 
-    // --- Public methods to call from anywhere ---
-
+    // --- Player ---
     public void PlayPossess()    => PlaySFX(possessSound);
     public void PlayReleased()   => PlaySFX(releasedSound);
     public void PlayPushBack()   => PlaySFX(pushBackSound);
-    public void PlayEnemyDeath() => PlaySFX(enemyDeathSound);
 
+    // --- Progression ---
+    public void PlayKill()       => PlaySFX(killSound);
+    public void PlayEnemyDeath() => PlaySFX(enemyDeathSound);
     private void PlayLevelUp(int level) => PlaySFX(levelUpSound);
 
+    // --- Power Ups ---
+    public void PlayPowerUp(string choice)
+    {
+        switch (choice)
+        {
+            case "Control +1 Enemy":
+            case "Control +2 Enemies":
+            case "Control +3 Enemies":
+                PlaySFX(powerUpControlSound); break;
+            case "Faster Move Speed":
+                PlaySFX(powerUpSpeedSound); break;
+            case "Longer Control Duration":
+                PlaySFX(powerUpDurationSound); break;
+            case "XP Boost (1.5x)":
+            case "XP Boost (2x)":
+                PlaySFX(powerUpXPSound); break;
+            case "Instant Cooldown Reset":
+                PlaySFX(powerUpCooldownSound); break;
+            case "Pushback Force Up":
+                PlaySFX(powerUpPushbackSound); break;
+        }
+    }
+
+    // --- Enemy ---
+    public void PlayMeleeAttack()  => PlaySFX(meleeAttackSound);
+    public void PlayRangedAttack() => PlaySFX(rangedAttackSound);
+    public void PlayTankAttack()   => PlaySFX(tankAttackSound);
+    public void PlayBossAttack()   => PlaySFX(bossAttackSound);
+
+    // --- Music ---
     private void PlayBossMusic()
     {
         if (bossMusicClip == null) return;
         musicSource.clip = bossMusicClip;
         musicSource.Play();
+    }
+
+    public void PlayWinMusic()
+    {
+        StopMusic();
+        PlaySFX(winMusic);
+    }
+
+    public void PlayLoseMusic()
+    {
+        StopMusic();
+        PlaySFX(loseMusic);
     }
 
     public void PlayMusic(AudioClip clip)

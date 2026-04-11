@@ -1,7 +1,5 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class XPManager : MonoBehaviour
@@ -10,21 +8,19 @@ public class XPManager : MonoBehaviour
 
     [Header("XP Settings")]
     public int xpPerKill = 10;
-    public int xpToNextLevel = 50; // XP needed for first level up
+    public int xpToNextLevel = 50;
 
     [Header("State")]
     public int CurrentXP { get; private set; } = 0;
     public int CurrentLevel { get; private set; } = 1;
     public int TotalKills { get; private set; } = 0;
 
-
     [Header("UI")]
     public Slider xpBar;
     public TextMeshProUGUI levelText;
 
-    // Events for HUD and LevelUp screen to listen to
-    public event System.Action<int, int> OnXPChanged;   // (currentXP, xpToNextLevel)
-    public event System.Action<int> OnLevelUp;          // (newLevel)
+    public event System.Action<int, int> OnXPChanged;
+    public event System.Action<int> OnLevelUp;
 
     void Awake()
     {
@@ -55,14 +51,12 @@ public class XPManager : MonoBehaviour
         CurrentXP -= xpToNextLevel;
         CurrentLevel++;
 
-        // Each level requiring 10 percent more XP than the last level 
-        // can be changed for us to cgeck for dev purpose - Sarun
+        // Each level requiring 10 percent more XP than the last level
         xpToNextLevel = Mathf.RoundToInt(xpToNextLevel * 1.1f);
 
         Debug.Log($"Level Up! Now level {CurrentLevel}");
         OnLevelUp?.Invoke(CurrentLevel);
 
-        // Pause game and show upgrade choices
         Time.timeScale = 0f;
         LevelUpScreen.Instance?.Show(CurrentLevel);
     }
@@ -73,12 +67,14 @@ public class XPManager : MonoBehaviour
         CurrentLevel = 1;
         xpToNextLevel = 50;
         TotalKills = 0;
+        UpdateUI();
     }
 
     void UpdateUI()
     {
-        xpBar.value = CurrentXP / xpToNextLevel;
-        levelText.text = "Level " + CurrentLevel.ToString();
+        if (xpBar != null)
+            xpBar.value = (float)CurrentXP / xpToNextLevel;
+        if (levelText != null)
+            levelText.text = "Level " + CurrentLevel.ToString();
     }
-
 }
