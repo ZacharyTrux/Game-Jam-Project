@@ -35,6 +35,7 @@ public class XPManager : MonoBehaviour
         LevelUp();
 }
 
+// Took help from claude to implement the level up system - Sarun
     private void LevelUp()
     {
         currentXP -= xpToNextLevel;
