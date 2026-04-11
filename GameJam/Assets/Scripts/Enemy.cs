@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour{
 
     public LayerMask groundLayer;
     public float moveSpeed = 3.5f;
-    public float attackRange = 10f;
+    public float attackRange = 1.5f;
     public float attackCooldown = 1f;
     public float health = 100f;
 
@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour{
     private GameObject target;
     private float lastAttackTime;
     private Animator animator;
+    private Vector3 groupOffset;
 
     void Awake(){
        player = GameObject.FindGameObjectWithTag("Player");
@@ -43,6 +44,7 @@ public class Enemy : MonoBehaviour{
     }
 
     void Start(){
+        groupOffset = new Vector3(UnityEngine.Random.Range(-1.5f, 1.5f), UnityEngine.Random.Range(-1.5f, 1.5f), 0);
         State = EnemyState.Targeting;
         Type = EnemyType.Melee;
         isPossessed = false;
@@ -89,6 +91,9 @@ public class Enemy : MonoBehaviour{
         float dist = Vector3.Distance(transform.position, target.transform.position);
         if(dist <= attackRange){
             RotateTowardsTarget(target.transform.position);
+            if (dist > 0.5f) { 
+                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, (moveSpeed * 0.5f) * Time.deltaTime);
+            }
             if(Time.time >= lastAttackTime + attackCooldown){
                 PerformAttack();
                 lastAttackTime = Time.time;
@@ -101,15 +106,16 @@ public class Enemy : MonoBehaviour{
     }
 
     private void HandlePossession(){
-        target = FindNearestTarget();
-        if(target != null){
-            State = EnemyState.Attacking;
-            return;
-        }
+        
 
         var currPoint = Waypoints.currentWaypoint;
         if(currPoint != null){ 
             MoveTowards(currPoint.transform.position);
+            target = FindNearestTarget();
+            if(target != null){
+                State = EnemyState.Attacking;
+                return;
+            }
         }
         else{
             OrbitPlayer();
@@ -168,6 +174,8 @@ public class Enemy : MonoBehaviour{
         State = EnemyState.PlayerControlled;
         gameObject.tag = "Ally";
         isPossessed = true;
+        target = null;
+        GetComponentInChildren<SpriteRenderer>().color = Color.green;
     }
 
     private void PerformAttack(){
@@ -213,12 +221,22 @@ public class Enemy : MonoBehaviour{
     private void OrbitPlayer(){
         if(player == null) return;
 
-        Vector3 direction = (transform.position - player.transform.position).normalized;
-        Vector3 orbitPosition = player.transform.position + direction * 1f; // 1f is orbit radius
-        MoveTowards(orbitPosition);
+        Vector3 orbitDirection = groupOffset + player.transform.position;
+        MoveTowards(orbitDirection);
     }
 
     private void ResetState(){
         State = isPossessed ? EnemyState.PlayerControlled : EnemyState.Targeting;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision){
+        if(collision.gameObject.CompareTag("Attack") && State != EnemyState.Dying){
+            health -= 20f; // Example damage value
+            Debug.Log("Remaining health: " + health);
+            if(health <= 0f){
+                State = EnemyState.Dying;
+                // Play death animation or effects here
+            }
+        }
     }
 }

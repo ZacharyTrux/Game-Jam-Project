@@ -1,16 +1,25 @@
 fileFormatVersion: 2
-guid: e9c858119e0d0b345be795edd6c88994
+guid: 500fe92daa8896b4bbd87ad36694487e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1184908566138265123
-    second: Swing_animation-removebg-preview_0
+      213: 158650357258066638
+    second: jaxon-heidenreich-img-3624-removebg-preview_0
   - first:
-      213: -7307083479149316911
-    second: Swing_animation-removebg-preview_1
+      213: 4621267834759061200
+    second: jaxon-heidenreich-img-3624-removebg-preview_1
   - first:
-      213: 5211289324566933016
-    second: Swing_animation-removebg-preview_2
+      213: 2502572082230714909
+    second: jaxon-heidenreich-img-3624-removebg-preview_2
+  - first:
+      213: 5773003116138528357
+    second: jaxon-heidenreich-img-3624-removebg-preview_3
+  - first:
+      213: -1116038026945408653
+    second: jaxon-heidenreich-img-3624-removebg-preview_4
+  - first:
+      213: -2632025094959806973
+    second: jaxon-heidenreich-img-3624-removebg-preview_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,13 +115,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Swing_animation-removebg-preview_0
+      name: jaxon-heidenreich-img-3624-removebg-preview_0
       rect:
         serializedVersion: 2
-        x: 105
-        y: 263
-        width: 50
-        height: 102
+        x: 13
+        y: 240
+        width: 38
+        height: 73
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +130,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dd1e200efeb5e8fe0800000000000000
-      internalID: -1184908566138265123
+      spriteID: eca1bdbc8a3a33200800000000000000
+      internalID: 158650357258066638
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Swing_animation-removebg-preview_1
+      name: jaxon-heidenreich-img-3624-removebg-preview_1
       rect:
         serializedVersion: 2
-        x: 214
-        y: 326
-        width: 39
-        height: 49
+        x: 190
+        y: 240
+        width: 59
+        height: 73
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1d4fd215a46089a90800000000000000
-      internalID: -7307083479149316911
+      spriteID: 0de90c67c9a022040800000000000000
+      internalID: 4621267834759061200
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Swing_animation-removebg-preview_2
+      name: jaxon-heidenreich-img-3624-removebg-preview_2
       rect:
         serializedVersion: 2
-        x: 212
-        y: 260
-        width: 48
-        height: 39
+        x: 349
+        y: 220
+        width: 73
+        height: 83
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,8 +174,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 81ee894b708325840800000000000000
-      internalID: 5211289324566933016
+      spriteID: d12eb22bc0ceab220800000000000000
+      internalID: 2502572082230714909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jaxon-heidenreich-img-3624-removebg-preview_3
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 181
+        width: 73
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56ef8a85fb3dd1050800000000000000
+      internalID: 5773003116138528357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jaxon-heidenreich-img-3624-removebg-preview_4
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 166
+        width: 93
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3715718d3590380f0800000000000000
+      internalID: -1116038026945408653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jaxon-heidenreich-img-3624-removebg-preview_5
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 8
+        width: 38
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 306c1070f1b297bd0800000000000000
+      internalID: -2632025094959806973
       vertices: []
       indices: 
       edges: []
@@ -185,9 +260,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Swing_animation-removebg-preview_0: -1184908566138265123
-      Swing_animation-removebg-preview_1: -7307083479149316911
-      Swing_animation-removebg-preview_2: 5211289324566933016
+      jaxon-heidenreich-img-3624-removebg-preview_0: 158650357258066638
+      jaxon-heidenreich-img-3624-removebg-preview_1: 4621267834759061200
+      jaxon-heidenreich-img-3624-removebg-preview_2: 2502572082230714909
+      jaxon-heidenreich-img-3624-removebg-preview_3: 5773003116138528357
+      jaxon-heidenreich-img-3624-removebg-preview_4: -1116038026945408653
+      jaxon-heidenreich-img-3624-removebg-preview_5: -2632025094959806973
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
