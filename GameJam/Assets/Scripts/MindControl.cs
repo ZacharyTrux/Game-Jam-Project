@@ -10,14 +10,16 @@ public class MindControl : MonoBehaviour
     public float vulnerabilityDuration = 10f;
 
     public bool IsVulnerable { get; private set; } = false;
-    public bool CanControl => !IsVulnerable && controlledEnemies.Count == 0;
+    public bool CanControl => !IsVulnerable && controlledEnemies.Count < maxControlledEnemies;
 
-    private List<Enemy> controlledEnemies = new();
+    public List<Enemy> controlledEnemies = new();
     private float vulnerabilityTimer = 0f;
 
     // Events for HUD / player visuals to subscribe to
     public event System.Action<float> OnVulnerabilityTick; // fires each frame during cooldown (1 → 0)
     public event System.Action OnControlLost;
+    private int maxControlledEnemies = 3;
+
 
     void Awake()
     {
@@ -25,8 +27,7 @@ public class MindControl : MonoBehaviour
         Instance = this;
     }
 
-    void Update()
-    {
+    void Update(){
         if (!IsVulnerable) return;
 
         vulnerabilityTimer -= Time.deltaTime;
@@ -57,9 +58,12 @@ public class MindControl : MonoBehaviour
         }
     }
 
-    private void TriggerVulnerability()
-    {
+    private void TriggerVulnerability(){
         IsVulnerable = true;
         vulnerabilityTimer = vulnerabilityDuration;
+    }
+
+    public void increaseMaxControl(int num){
+        maxControlledEnemies += num;
     }
 }

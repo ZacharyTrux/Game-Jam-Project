@@ -26,20 +26,19 @@ public class Enemy : MonoBehaviour{
     public EnemyType Type { get; private set; }
     public bool isPossessed { get; set; }
 
-    public NavMeshAgent agent;
     public LayerMask groundLayer;
     public float moveSpeed = 3.5f;
     public float attackRange = 2f;
     public float attackCooldown = 1f;
+    public float health = 100f;
 
     private GameObject player;
+    private GameObject target;
 
     void Start(){
         State = EnemyState.Targeting;
         Type = EnemyType.Melee;
         isPossessed = false;
-
-        agent = GetComponent<NavMeshAgent>();
     }
 
     void Update(){
@@ -65,7 +64,7 @@ public class Enemy : MonoBehaviour{
 
     private void HandleTargeting(GameObject target){
         // Move towards the target and check for attack range
-
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed * Time.deltaTime);
         if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
             State = EnemyState.Attacking;
         }
@@ -73,14 +72,18 @@ public class Enemy : MonoBehaviour{
 
     private void HandleAttacking(){
         // need to implement
+        Debug.Log("Attacking target");
+        if(Vector3.Distance(transform.position, target.transform.position) > attackRange){
+            State = EnemyState.Targeting;
+        }
     }
 
     private void HandlePossession(){
         var currPoint = Waypoints.currentWaypoint;
-        if(currPoint != null){ // move towards waypoint if it exists 
+        if(currPoint != null){ 
             // grab the position of the waypoint and move towards it
             Vector3 waypointPos = currPoint.transform.position;
-            transform.position = Vector3.Lerp(transform.position, waypointPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, waypointPos, moveSpeed * Time.deltaTime);
 
             // rotate the enemy sprite to face the waypoint
             Vector2 direction = currPoint.transform.position - transform.position;
@@ -94,9 +97,7 @@ public class Enemy : MonoBehaviour{
         // mousePos.z = 0; 
 
         // move towards mouse position
-        //transform.position = Vector3.Lerp(transform.position, mousePos, moveSpeed * Time.deltaTime);
-
-        
+        //transform.position = Vector3.Lerp(transform.position, mousePos, moveSpeed * Time.deltaTime);        
     }
 
     private void HandleDeath(){
@@ -105,17 +106,13 @@ public class Enemy : MonoBehaviour{
     }
 
     private void DecideTarget(){
-        if (isPossessed){
-            State = EnemyState.PlayerControlled;
-        }
-        else{
-            // Logic to find the nearest player or target
-            GameObject target = FindNearestTarget();
-            if (target != null) {
-                HandleTargeting(target);
-            }
+        // Logic to find the nearest player or target
+        target = FindNearestTarget();
+        if (target != null) {
+            HandleTargeting(target);
         }
     }
+    
 
     private GameObject FindNearestTarget(){
         string[] targetTags = {"Player", "Ally"};

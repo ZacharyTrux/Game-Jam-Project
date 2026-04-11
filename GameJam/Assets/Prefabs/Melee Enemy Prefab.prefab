@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 308029491338888681}
   - component: {fileID: 6605685763871353385}
   - component: {fileID: 1954851838979649507}
-  m_Layer: 0
+  - component: {fileID: 340144472723104573}
+  m_Layer: 6
   m_Name: Melee Enemy Prefab
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,6 +108,25 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &340144472723104573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93505995448104935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7cb03ae972ffaa4990ee9b27448a579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  moveSpeed: 3.5
+  attackRange: 2
+  attackCooldown: 1
+  health: 100
 --- !u!1 &5877271420404564558
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3336059612910205719}
   - component: {fileID: 2508601724631180956}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Melee Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}

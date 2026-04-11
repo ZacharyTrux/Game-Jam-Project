@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     public float controlRange = 8f;
     public LayerMask enemyLayer;
 
+    [Header("Push Back")]
+    public GameObject pushBackEffect;
+
     private InputSystem_Actions playerInput;
     private Rigidbody2D rb;
     private Vector2 moveInput;
@@ -31,12 +34,13 @@ public class Player : MonoBehaviour
     void Start(){
         playerInput.Enable();
         playerInput.Player.Enable();
-        playerInput.Player.Attack.performed += OnTryPossess;
+        playerInput.Player.Possess.performed += OnTryPossess;
+        playerInput.Player.Attack.performed += OnPushBack;
     }
 
-    //void OnDestroy(){
-    //    playerInput.Player.Attack.performed -= OnTryPossess;
-    //}
+    void OnDestroy(){
+        playerInput.Player.Attack.performed -= OnPushBack;
+    }
 
     void Update(){
         Vector2 raw = playerInput.Player.Move.ReadValue<Vector2>();
@@ -49,8 +53,7 @@ public class Player : MonoBehaviour
 
     private void OnTryPossess(InputAction.CallbackContext ctx)
     {
-        if (MindControl.Instance == null) return;
-        if (!MindControl.Instance.CanControl) return;
+        if (MindControl.Instance == null || !MindControl.Instance.CanControl) return;
 
         Vector2 worldPos = mainCam.ScreenToWorldPoint(
             UnityEngine.InputSystem.Mouse.current.position.ReadValue()
@@ -76,6 +79,11 @@ public class Player : MonoBehaviour
         }
 
         MindControl.Instance.TryControl(enemy);
+    }
+
+    private void OnPushBack(InputAction.CallbackContext ctx){
+        GameObject attack = Instantiate(pushBackEffect, transform.position, Quaternion.identity);
+        Destroy(attack, 3f);
     }
 
     public void EnableInput()  => playerInput.Player.Enable();

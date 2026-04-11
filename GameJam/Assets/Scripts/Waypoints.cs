@@ -12,11 +12,10 @@ public class Waypoints : MonoBehaviour{
 
     // Update is called once per frame
     void Update(){
-        if(Mouse.current.leftButton.wasPressedThisFrame) // Replace this with waypoint keybind
+        if(Mouse.current.rightButton.wasPressedThisFrame) // Replace this with waypoint keybind
         {
             ClickDetector();
         }
-        
     }
 
     void ClickDetector(){
