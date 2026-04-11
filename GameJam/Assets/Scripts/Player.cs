@@ -21,7 +21,12 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 currentVelocity;
     private Camera mainCam;
+
     private float health = 100f;
+
+    private SpriteRenderer spriteRenderer;
+    private float lastHorizontal = 0f; // defaults to left facing
+
 
     private void Awake()
     {
@@ -39,6 +44,7 @@ public class Player : MonoBehaviour
         playerInput.Player.Enable();
         playerInput.Player.Possess.performed += OnTryPossess;
         playerInput.Player.Attack.performed += OnPushBack;
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void OnDestroy(){
@@ -50,6 +56,8 @@ public class Player : MonoBehaviour
         Vector2 targetInput = playerInput.Player.Move.ReadValue<Vector2>().normalized;
         moveInput = Vector2.SmoothDamp(moveInput, targetInput, ref currentVelocity, smoothTime);
         transform.Translate(moveSpeed * Time.deltaTime * moveInput);
+        if (moveInput.x != 0) lastHorizontal = moveInput.x;
+        spriteRenderer.flipX = (lastHorizontal > 0);
     }
 
 
