@@ -4,7 +4,12 @@ using UnityEngine;
 public class RangedEnemy : Enemy {
 
     public GameObject attackProjectilePrefab;
-    public RangedEnemy() {
+    protected override void Awake() {
+        base.Awake();
+    }
+
+    protected override void Start(){
+        base.Start();
         Type = EnemyType.Ranged;
         attackRange = 5f;
         attackCooldown = 0.5f;
