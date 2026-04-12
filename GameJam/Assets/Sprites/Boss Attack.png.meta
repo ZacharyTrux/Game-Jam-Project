@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ae9d8206c26acdc49a3f348bacaa0ce4
+guid: 8519140671dbb404a886bf31a17c87e1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2720922381176439266
-    second: blank_0
+      213: 2937345578652305984
+    second: Boss Attack_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,30 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: blank_0
+      name: Boss Attack_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1
-        height: 1
+        x: 23
+        y: 35
+        width: 70
+        height: 66
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e1e7198a2875d3ad0800000000000000
-      internalID: -2720922381176439266
+      spriteID: 04a8226bd3c83c820800000000000000
+      internalID: 2937345578652305984
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      blank_0: -2720922381176439266
+      Boss Attack_0: 2937345578652305984
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
