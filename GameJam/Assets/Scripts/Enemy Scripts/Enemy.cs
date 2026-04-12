@@ -159,27 +159,28 @@ public abstract class Enemy : MonoBehaviour{
         SoundManager.Instance?.PlayEnemyDeath();
         SoundManager.Instance?.PlayKill();
         ReleaseSlot();
-        Destroy(gameObject);
         if (Type == EnemyType.Boss)
         {
             PlayerPrefs.SetInt("Cleared", 1);
             SceneManager.LoadScene("WinScreen");
         }
+        Destroy(gameObject);
     }
 
     protected virtual void HandlePossession(){
         var currPoint = Waypoints.currentWaypoint;
-        if(currPoint != null){ 
-            MoveTowards(currPoint.transform.position);
-            target = FindNearestTarget();
+        if(currPoint != null){
+            target = currPoint.GetComponent<Enemy>() != null ? currPoint : null;
             if(target != null){
                 if(target != lastSlotTarget) ReserveSlotAroundTarget(target);
-                State = EnemyState.Targeting;
-                return;
+                    State = EnemyState.Targeting;
+                    return;
             }
+            MoveTowards(currPoint.transform.position);
         }
         else{
-            ReleaseSlot(); // not targeting anyone, free the slot
+            ReleaseSlot();
+            target = null;
             OrbitPlayer();
         }
     }
