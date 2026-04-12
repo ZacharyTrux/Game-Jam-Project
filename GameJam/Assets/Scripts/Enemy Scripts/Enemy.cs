@@ -39,7 +39,6 @@ public abstract class Enemy : MonoBehaviour{
     protected Animator animator;
     protected Vector3 groupOffset;
 
-    // The world-space position this enemy has reserved next to its target
     private Vector3 reservedSlotPosition;
     private GameObject lastSlotTarget;
 

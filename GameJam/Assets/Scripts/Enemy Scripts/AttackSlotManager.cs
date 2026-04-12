@@ -22,7 +22,7 @@ public class AttackSlotManager : MonoBehaviour{
         if(!reservations.ContainsKey(target))
             reservations[target] = new List<SlotReservation>();
 
-        List<SlotReservation> slots = reservations[target]; // was missing — slots was never assigned
+        List<SlotReservation> slots = reservations[target]; 
 
         // Release any existing slot this enemy holds around this target
         ReleaseSlot(target, enemy);
@@ -30,12 +30,12 @@ public class AttackSlotManager : MonoBehaviour{
         // Find the first free slot index and reserve it
         for(int i = 0; i < slotsPerTarget; i++){
             if(!SlotTaken(slots, i)){
-                slots.Add(new SlotReservation(i, enemy)); // was misspelled "SlotReseration"
+                slots.Add(new SlotReservation(i, enemy)); 
                 return SlotPosition(target.transform.position, i);
             }
         }
 
-        // All slots full — nudge slightly so enemies don't perfectly overlap
+        
         return target.transform.position + (Vector3)(Random.insideUnitCircle.normalized * slotRadius);
     }
 
@@ -43,13 +43,12 @@ public class AttackSlotManager : MonoBehaviour{
         if(target == null) return Vector3.zero;
         if(!reservations.ContainsKey(target)) return target.transform.position;
 
-        foreach(SlotReservation r in reservations[target]){ // was "reservation[target]" (missing 's')
+        foreach(SlotReservation r in reservations[target]){
             if(r.owner == enemy)
                 return SlotPosition(target.transform.position, r.slotIndex);
         }
 
-        // No reservation found for this enemy
-        return target.transform.position; // was inside the loop — only checked the first element
+        return target.transform.position; 
     }
 
     public void ReleaseSlot(GameObject target, Enemy enemy){
@@ -65,14 +64,14 @@ public class AttackSlotManager : MonoBehaviour{
 
     private Vector3 SlotPosition(Vector3 center, int slotIndex){
         float angle = slotIndex * (360f / slotsPerTarget) * Mathf.Deg2Rad;
-        return center + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * slotRadius; // was Mathf.cos (lowercase c)
+        return center + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * slotRadius; 
     }
 
     private bool SlotTaken(List<SlotReservation> slots, int index){
         foreach(SlotReservation r in slots){
             if(r.slotIndex == index) return true;
         }
-        return false; // was inside the loop — exited after checking only the first slot
+        return false; 
     }
 
     private class SlotReservation{
