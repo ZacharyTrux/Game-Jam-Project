@@ -259,7 +259,7 @@ public abstract class Enemy : MonoBehaviour{
 
     private System.Collections.IEnumerator IFramesEnabled(){ // go through IFrames
         isInvincible = true; // ensure player can not be hurt
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        SpriteRenderer sprite = GetComponentInChildren<SpriteRenderer>();
         for(int i = 0; i < 4; i++){
             sprite.color = new Color(1,1,1, 0.2f); // lower alpha of player
             yield return new WaitForSeconds(iFrames / 8); 
