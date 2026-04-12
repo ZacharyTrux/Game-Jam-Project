@@ -18,59 +18,77 @@ public class MindControl : MonoBehaviour
     // Events for HUD / player visuals to subscribe to
     public event System.Action<float> OnVulnerabilityTick; // fires each frame during cooldown (1 → 0)
     public event System.Action OnControlLost;
+    private int baseControlledEnemies = 3;
     private int maxControlledEnemies = 3;
 
 
-    void Awake(){
+    void Awake()
+    {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
     }
 
-    void Update(){
+    void Update()
+    {
         if (!IsVulnerable) return;
 
         vulnerabilityTimer -= Time.deltaTime;
         OnVulnerabilityTick?.Invoke(vulnerabilityTimer / vulnerabilityDuration);
 
-        if (vulnerabilityTimer <= 0f){
+        if (vulnerabilityTimer <= 0f)
+        {
             IsVulnerable = false;
             OnVulnerabilityTick?.Invoke(0f);
         }
     }
 
-    public bool TryControl(Enemy enemy){
-        if(enemy == null) return false;
-        if(!CanControl) return false;
+    public bool TryControl(Enemy enemy)
+    {
+        if (enemy == null) return false;
+        if (!CanControl) return false;
 
         controlledEnemies.Add(enemy);
         enemy.MakePossesed();
         return true;
     }
 
-    public void ReleaseEnemy(Enemy enemy){
+    public void ReleaseEnemy(Enemy enemy)
+    {
         controlledEnemies.Remove(enemy);
 
-        if (controlledEnemies.Count == 0){
+        if (controlledEnemies.Count == 0)
+        {
             OnControlLost?.Invoke();
             TriggerVulnerability();
         }
     }
 
-    private void TriggerVulnerability(){
+    private void TriggerVulnerability()
+    {
         IsVulnerable = true;
         vulnerabilityTimer = vulnerabilityDuration;
         SoundManager.Instance?.PlayReleased();
     }
-    
 
-    public void IncreaseMaxControl(int num){
+    public void IncreaseMaxControl(int num)
+    {
         maxControlledEnemies += num;
     }
 
-// for the level up feature 
-    public void ResetVulnerability(){
-    IsVulnerable = false;
-    vulnerabilityTimer = 0f;
-    OnVulnerabilityTick?.Invoke(0f);
-}
+    // for the level up feature 
+    public void ResetVulnerability()
+    {
+        IsVulnerable = false;
+        vulnerabilityTimer = 0f;
+        OnVulnerabilityTick?.Invoke(0f);
+    }
+
+
+    public void increaseMaxControl(int num)
+    {
+        maxControlledEnemies += num;
+    }
+
+    public void ResetGame() => maxControlledEnemies = baseControlledEnemies;
+
 }

@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour{
     void Update(){
         if(XPManager.Instance != null && XPManager.Instance.TotalKills > defaultNextWave){
             CurrWave++;
+            if (CurrWave % 5 == 0) LevelUpScreen.Instance.ScaleToWave();
             SetupNextWave();
         }
     }

@@ -8,6 +8,7 @@ public class XPManager : MonoBehaviour
 
     [Header("XP Settings")]
     public int xpPerKill = 10;
+    public int bonusXP = 0;
     public int xpToNextLevel = 50;
 
     [Header("State")]
@@ -36,7 +37,7 @@ public class XPManager : MonoBehaviour
     public void AddKill()
     {
         TotalKills++;
-        CurrentXP += xpPerKill;
+        CurrentXP += xpPerKill + bonusXP;
         Debug.Log($"XP: {CurrentXP}/{xpToNextLevel} | Kills: {TotalKills} | Level: {CurrentLevel}");
         OnXPChanged?.Invoke(CurrentXP, xpToNextLevel);
 

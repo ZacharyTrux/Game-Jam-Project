@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public static Player Instance { get; private set; }
 
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] public float moveSpeed = 5f;
     [SerializeField] private float smoothTime = 0.1f;
 
     [Header("Mind Control")]
@@ -27,8 +27,10 @@ public class Player : MonoBehaviour
 
     public float health = 100f;
     public float maxHealth = 100f;
+    public float regenRate = 10f;
     private SpriteRenderer spriteRenderer;
     private float lastHorizontal = 0f;
+    public int damage = 0;
 
     private void Awake()
     {
@@ -134,4 +136,17 @@ public class Player : MonoBehaviour
     {
         moveSpeed += amount;
     }
+
+    public void IncreaseHealth(float bonusHealth, float bonusRegen)
+    {
+        maxHealth += bonusHealth;
+        regenRate += bonusRegen;
+
+    }
+
+    public void ResetGame()
+    {
+
+    }
+
 }

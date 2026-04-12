@@ -1,6 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+using System.Collections.Generic;
+
+
+public enum UpgradeTypes
+{
+    CONTROL,
+    HEALTH,
+    DMG,
+    SPEED,
+    XP
+}
+
+public class Upgrade
+{
+    public UpgradeTypes type;
+    public string desc;
+    public int weight;
+
+    public Upgrade(UpgradeTypes _type, string _desc, int _weight)
+    {
+        type = _type;
+        desc = _desc;
+        weight = _weight;
+    }
+}
+
 
 public class LevelUpScreen : MonoBehaviour
 {
@@ -15,27 +42,31 @@ public class LevelUpScreen : MonoBehaviour
     // Your teammate hooks into this to scale enemy spawning
     public static event System.Action<int> OnLevelUpConfirmed;
 
-    // Level-specific upgrade pools
-    private string[][] level1Upgrades = new string[][]
-    {
-        new string[] { "Control +1 Enemy", "Faster Move Speed", "Longer Control Duration" },
-        new string[] { "Control +1 Enemy", "XP Boost (1.5x)", "Pushback Force Up" },
-        new string[] { "Faster Move Speed", "Longer Control Duration", "XP Boost (1.5x)" },
-    };
+    // Upgrade Setup (Scaling Upgrades)
+    // CONTROL
+    public int upgradeScaleControl = 1;
+    // Health / Regen
+    public float upgradeScaleHealth = 10f;
+    public float upgradeScaleHealthRegen = 1f;
 
-    private string[][] level2Upgrades = new string[][]
-    {
-        new string[] { "Control +2 Enemies", "Faster Move Speed", "Instant Cooldown Reset" },
-        new string[] { "Control +1 Enemy", "XP Boost (2x)", "Longer Control Duration" },
-        new string[] { "Control +2 Enemies", "Pushback Force Up", "XP Boost (2x)" },
-    };
+    // Non-Scaling Upgrades
+    public float pushAttackDmgUpgrade = 1f;
+    public float speedUpgrade = 0.2f;
 
-    private string[][] level3Upgrades = new string[][]
-    {
-        new string[] { "Control +2 Enemies", "Instant Cooldown Reset", "XP Boost (2x)" },
-        new string[] { "Control +3 Enemies", "Faster Move Speed", "Longer Control Duration" },
-        new string[] { "Control +2 Enemies", "XP Boost (2x)", "Instant Cooldown Reset" },
-    };
+    // Upgrade Descriptions
+    public string upgradeDescControl;
+    public string upgradeDescHealth;
+    public string upgradeDescDMG;
+    public string upgradeDescSpeed;
+    public string upgradeDescXP;
+
+    public List<Upgrade> availibleUpgrades = new();
+    public Upgrade speed;
+    public Upgrade health;
+    public Upgrade xp;
+    public Upgrade dmg;
+    public Upgrade control;
+
 
     void Awake()
     {
@@ -44,66 +75,94 @@ public class LevelUpScreen : MonoBehaviour
         panel.SetActive(false);
     }
 
+    private void Start()
+    {
+        speed = new(UpgradeTypes.SPEED, $"Speed Bonus of +{speedUpgrade}", 5);
+        health = new(UpgradeTypes.HEALTH, $"Gain +{upgradeScaleHealth} max health and {upgradeScaleHealthRegen} bonus health regen", 20);
+        dmg = new(UpgradeTypes.DMG, $"Increase Physic Wave Damage by +1", 10);
+        xp = new(UpgradeTypes.XP, $"Gain +10% base bonus XP from enemies", 5);
+        control = new(UpgradeTypes.CONTROL, $"Control +{upgradeScaleControl} enemies(s)", 60);
+        availibleUpgrades.Add(speed);
+        availibleUpgrades.Add(health);
+        availibleUpgrades.Add(dmg);
+        availibleUpgrades.Add(xp);
+        availibleUpgrades.Add(control);
+    }
+
+
+    public List<Upgrade> GenerateUpgradePool()
+    {
+        List<Upgrade> pool = new(availibleUpgrades);
+        List<Upgrade> choices = new();
+        while (choices.Count < 3 && pool.Count > 0)
+        {
+            Upgrade choice = WeightCalc(pool);
+            choices.Add(choice);
+            pool.Remove(choice);
+        }
+        return choices;
+    }
+
+    public Upgrade WeightCalc(List<Upgrade> list)
+    {
+        int totalWeight = 0;
+        foreach (Upgrade upgrade in list) totalWeight += upgrade.weight;
+        int r = Random.Range(0, totalWeight);
+        int cursor = 0;
+        foreach (var u in list)
+        {
+            cursor += u.weight;
+            if (r < cursor) return u;
+        }
+        return list[0];
+    }
+
     public void Show(int newLevel)
     {
         panel.SetActive(true);
         levelText.text = $"Level {newLevel}!";
 
-        // Pick upgrade pool based on level
-        string[][] pool = newLevel == 1 ? level1Upgrades :
-                          newLevel == 2 ? level2Upgrades :
-                          level3Upgrades;
-
-        string[] options = pool[Random.Range(0, pool.Length)];
-
+        var choices = GenerateUpgradePool();
         for (int i = 0; i < choiceButtons.Length; i++)
         {
-            string option = options[i];
-            choiceLabels[i].text = option;
+            Upgrade option = choices[i];
+            choiceLabels[i].text = option.desc;
             choiceButtons[i].onClick.RemoveAllListeners();
-            choiceButtons[i].onClick.AddListener(() => OnChoiceSelected(option, newLevel));
+            choiceButtons[i].onClick.AddListener(() => OnChoiceSelected(option.type));
         }
     }
 
 
-    private void OnChoiceSelected(string choice, int level)
+    private void OnChoiceSelected(UpgradeTypes type)
     {
-        switch (choice)
+        switch (type)
         {
-            case "Control +1 Enemy":
-                MindControl.Instance.IncreaseMaxControl(1);
+            case UpgradeTypes.HEALTH:
+                Player.Instance.IncreaseHealth(upgradeScaleHealth, upgradeScaleHealthRegen);
                 break;
-            case "Control +2 Enemies":
-                MindControl.Instance.IncreaseMaxControl(2);
+            case UpgradeTypes.DMG:
+                Player.Instance.damage += 1;
                 break;
-            case "Control +3 Enemies":
-                MindControl.Instance.IncreaseMaxControl(3);
+            case UpgradeTypes.SPEED:
+                Player.Instance.IncreaseMoveSpeed(speedUpgrade);
                 break;
-            case "Faster Move Speed":
-                Player.Instance.IncreaseMoveSpeed(1.5f);
+            case UpgradeTypes.CONTROL:
+                MindControl.Instance.IncreaseMaxControl(upgradeScaleControl);
                 break;
-            case "Longer Control Duration":
-                MindControl.Instance.vulnerabilityDuration += 3f;
-                break;
-            case "XP Boost (1.5x)":
-                XPManager.Instance.xpPerKill = Mathf.RoundToInt(XPManager.Instance.xpPerKill * 1.5f);
-                break;
-            case "XP Boost (2x)":
-                XPManager.Instance.xpPerKill *= 2;
-                break;
-            case "Instant Cooldown Reset":
-                // Resets vulnerability so player can possess again immediately
-                MindControl.Instance.ResetVulnerability();
-                break;
-            case "Pushback Force Up":
-                // Hook into pushback when ready
+            case UpgradeTypes.XP:
+                XPManager.Instance.bonusXP += 1;
                 break;
         }
-
-        // Fire event so teammate can scale enemy spawning
-        OnLevelUpConfirmed?.Invoke(level);
 
         panel.SetActive(false);
         Time.timeScale = 1f;
     }
+
+    public void ScaleToWave()
+    {
+        upgradeScaleControl += 1;
+        upgradeScaleHealth += 5;
+        upgradeScaleHealthRegen += 1;
+    }
+
 }

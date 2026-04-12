@@ -5,7 +5,6 @@ public class PushBackAttack : MonoBehaviour{
     public float pushBackForce = 10f;
     public float speed = 5f;
     public float lifetime = 0.5f;
-    public int damage = 0;
     private Vector3 moveDirection;
 
 
@@ -32,7 +31,7 @@ public class PushBackAttack : MonoBehaviour{
         if (collision.CompareTag("Enemy")){
             Enemy enemy = collision.GetComponent<Enemy>();
             if (enemy != null){
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(Player.Instance.damage);
                 enemy.isStunned = true;
                 enemy.stunTimer = 2f;
             }
