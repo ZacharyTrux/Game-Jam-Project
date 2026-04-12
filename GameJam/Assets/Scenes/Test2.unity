@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::XPManager
   xpPerKill: 10
+  bonusXP: 0
   xpToNextLevel: 50
   xpBar: {fileID: 1815242048}
   levelText: {fileID: 1959836702}
@@ -1133,10 +1134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24cbd56c3d19318439669d1782f1e90d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnManager
-  enemies:
-  - {fileID: 93505995448104935, guid: 5277cc7718b995b4d9b01705cc38aefa, type: 3}
-  - {fileID: 4994574112388676231, guid: 80252c293d254334e966630cd969507a, type: 3}
-  - {fileID: 8730726245684181756, guid: a8772e984816fe041afbc4bec74c301a, type: 3}
+  enemiesData: []
   spawnEnabled: 1
   spawnRate: 1
   maxEnemies: 8
@@ -1968,6 +1966,16 @@ MonoBehaviour:
   - {fileID: 1405547912}
   - {fileID: 1116336989}
   - {fileID: 1458620692}
+  upgradeScaleControl: 1
+  upgradeScaleHealth: 10
+  upgradeScaleHealthRegen: 1
+  pushAttackDmgUpgrade: 1
+  speedUpgrade: 0.2
+  upgradeDescControl: 
+  upgradeDescHealth: 
+  upgradeDescDMG: 
+  upgradeDescSpeed: 
+  upgradeDescXP: 
 --- !u!4 &922840292
 Transform:
   m_ObjectHideFlags: 0
@@ -2391,7 +2399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1126246148
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2434,6 +2442,16 @@ MonoBehaviour:
   levelText: {fileID: 0}
   choiceButtons: []
   choiceLabels: []
+  upgradeScaleControl: 1
+  upgradeScaleHealth: 10
+  upgradeScaleHealthRegen: 1
+  pushAttackDmgUpgrade: 1
+  speedUpgrade: 0.2
+  upgradeDescControl: 
+  upgradeDescHealth: 
+  upgradeDescDMG: 
+  upgradeDescSpeed: 
+  upgradeDescXP: 
 --- !u!114 &1126246150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3466,7 +3484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bc29777c33ac24b9f9ec8338fabb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  waveText: {fileID: 0}
+  waveText: {fileID: 2063995999}
 --- !u!4 &1906887728
 Transform:
   m_ObjectHideFlags: 0

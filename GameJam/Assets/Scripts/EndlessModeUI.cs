@@ -28,12 +28,9 @@ public class EndlessModeUI : MonoBehaviour
     }
     public void QuitGame()
     {
+        PlayerPrefs.Save();
         Application.Quit();
     }
 
-    public void UpdateHealth()
-    {
-        healthBar.value = (float)Player.Instance.health / Player.Instance.maxHealth;
-    }
-
+    public void UpdateHealth() => healthBar.value = (float)Player.Instance.health / Player.Instance.maxHealth;
 }
