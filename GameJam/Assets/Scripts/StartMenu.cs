@@ -13,6 +13,8 @@ public class StartMenu : MonoBehaviour
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private TextMeshProUGUI muteButtonText;
 
+    public GameObject endlessModeButton;
+
     private bool isMuted = false;
 
     void Start()
@@ -24,6 +26,10 @@ public class StartMenu : MonoBehaviour
             if (sfxVolumeSlider != null)
                 sfxVolumeSlider.value = SoundManager.Instance.sfxVolume;
         }
+        if (!PlayerPrefs.HasKey("Cleared")) PlayerPrefs.SetInt("Cleared", 0);
+        if (PlayerPrefs.GetInt("Cleared") == 0) endlessModeButton.SetActive(false);
+        else endlessModeButton.SetActive(true);
+        
     }
 
     public void ToggleMenu(int menuIndex) => menus[menuIndex].SetActive(!menus[menuIndex].activeSelf);
@@ -34,25 +40,18 @@ public class StartMenu : MonoBehaviour
             menu.SetActive(false);
     }
 
-    public void StartGame()
-    {
-        SceneManager.LoadScene("Test1");
-    }
+    public void StartGame() => SceneManager.LoadScene("Test1");
+    public void EndlessMode() => SceneManager.LoadScene("EndlessMode");
 
     public void QuitGame()
     {
+        PlayerPrefs.Save();
         Application.Quit();
     }
 
-    public void OnMusicVolumeChanged(float value)
-    {
-        SoundManager.Instance?.SetMusicVolume(value);
-    }
+    public void OnMusicVolumeChanged(float value) => SoundManager.Instance?.SetMusicVolume(value);
 
-    public void OnSFXVolumeChanged(float value)
-    {
-        SoundManager.Instance?.SetSFXVolume(value);
-    }
+    public void OnSFXVolumeChanged(float value) => SoundManager.Instance?.SetSFXVolume(value);
 
     public void ToggleMute()
     {
