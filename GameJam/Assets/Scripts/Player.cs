@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private float lastHorizontal = 0f;
     public int damage = 0;
+    private bool isInvincible = false;
+    private int iFrames = 6;
 
     // Possession hold
     private PossessionBar currentTargetBar = null;
@@ -152,10 +154,10 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Attack"))
         {
+            if(isInvincible) return;
             health -= 20f;
             Debug.Log("Player damaged with remaining health: " + health);
-            //if (SceneManager.GetActiveScene().name == "EndlessMode")
-                //EndlessModeUI.Instance.UpdateHealth();
+            StartCoroutine(IFramesEnabled());
         }
         if (health <= 0f)
         {
@@ -178,6 +180,19 @@ public class Player : MonoBehaviour
         maxHealth += bonusHealth;
         regenRate += bonusRegen;
         healthBar.maxValue = maxHealth;
+    }
+
+    private System.Collections.IEnumerator IFramesEnabled(){ // go through IFrames
+        isInvincible = true; // ensure player can not be hurt
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        for(int i = 0; i < 4; i++){
+            sprite.color = new Color(1,1,1, 0.2f); // lower alpha of player
+            yield return new WaitForSeconds(iFrames / 8); 
+            sprite.color = new Color(1,1,1, 1); // increase again to mimic flashing
+            yield return new WaitForSeconds(iFrames / 8);
+        }
+
+        isInvincible = false; // player is damagable again
     }
 
     public void ResetGame()

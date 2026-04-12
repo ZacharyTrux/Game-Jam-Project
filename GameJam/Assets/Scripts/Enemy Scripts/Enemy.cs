@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using NUnit.Framework;
 
 public enum EnemyState{
     Targeting,
@@ -32,6 +33,9 @@ public abstract class Enemy : MonoBehaviour{
     public float health = 100f;
     public bool isStunned = false;
     public float stunTimer = 0;
+
+    private bool isInvincible = false;
+    private int iFrames = 5; 
 
     protected GameObject player;
     protected GameObject target;
@@ -102,11 +106,13 @@ public abstract class Enemy : MonoBehaviour{
     protected abstract void HandleAttacking();
 
     public virtual void TakeDamage(float damage){
+        if(isInvincible) return;
         health -= damage;
         Debug.Log("health - " + health);
         if(health <= 0f && State != EnemyState.Dying){
             State = EnemyState.Dying;
         }
+        StartCoroutine(IFramesEnabled());
     }
 
     public virtual void MakePossesed(){
@@ -249,5 +255,18 @@ public abstract class Enemy : MonoBehaviour{
         if(!isStunned) return;
         stunTimer -= Time.deltaTime;
         if(stunTimer <= 0) isStunned = false;
+    }
+
+    private System.Collections.IEnumerator IFramesEnabled(){ // go through IFrames
+        isInvincible = true; // ensure player can not be hurt
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        for(int i = 0; i < 4; i++){
+            sprite.color = new Color(1,1,1, 0.2f); // lower alpha of player
+            yield return new WaitForSeconds(iFrames / 8); 
+            sprite.color = new Color(1,1,1, 1); // increase again to mimic flashing
+            yield return new WaitForSeconds(iFrames / 8);
+        }
+
+        isInvincible = false; 
     }
 }
