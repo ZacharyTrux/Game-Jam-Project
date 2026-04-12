@@ -10,6 +10,7 @@ public class MeleeEnemy : Enemy {
     }
 
     protected override void MoveTowards(Vector3 position) {
+        animator.SetTrigger("Walking");
         transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
         RotateTowards(position);
     }

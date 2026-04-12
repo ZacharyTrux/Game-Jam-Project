@@ -189,8 +189,14 @@ public abstract class Enemy : MonoBehaviour{
 
         Vector2 direction = position - transform.position;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        SpriteRenderer sprite = GetComponentInChildren<SpriteRenderer>();
+        if(direction.x > 0){
+            sprite.flipX = false;
+        }
+        else if(direction.x < 0){
+            sprite.flipX = true;
+        }
+        //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     }
 
     protected void ResetState(){
