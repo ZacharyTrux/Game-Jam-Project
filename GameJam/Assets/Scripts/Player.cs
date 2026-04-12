@@ -28,9 +28,13 @@ public class Player : MonoBehaviour
     public float health = 100f;
     public float maxHealth = 100f;
     public float regenRate = 10f;
+
     private SpriteRenderer spriteRenderer;
     private float lastHorizontal = 0f;
     public int damage = 0;
+
+    // Possession hold
+    private PossessionBar currentTargetBar = null;
 
     private void Awake()
     {
@@ -47,13 +51,16 @@ public class Player : MonoBehaviour
     {
         playerInput.Enable();
         playerInput.Player.Enable();
-        playerInput.Player.Possess.performed += OnTryPossess;
+        playerInput.Player.Possess.started  += OnPossessStarted;
+        playerInput.Player.Possess.canceled += OnPossessCanceled;
         playerInput.Player.Attack.performed += OnPushBack;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void OnDestroy()
     {
+        playerInput.Player.Possess.started  -= OnPossessStarted;
+        playerInput.Player.Possess.canceled -= OnPossessCanceled;
         playerInput.Player.Attack.performed -= OnPushBack;
     }
 
@@ -66,24 +73,26 @@ public class Player : MonoBehaviour
         spriteRenderer.flipX = (lastHorizontal > 0);
     }
 
-    private void OnTryPossess(InputAction.CallbackContext ctx){
+    private void OnPossessStarted(InputAction.CallbackContext ctx)
+    {
         if (MindControl.Instance == null || !MindControl.Instance.CanControl) return;
 
         Vector2 worldPos = mainCam.ScreenToWorldPoint(
             UnityEngine.InputSystem.Mouse.current.position.ReadValue()
         );
         RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero, 0f, enemyLayer);
-
         if (hit.collider == null) return;
+
         if (!hit.collider.TryGetComponent<Enemy>(out var enemy)) return;
 
-        if (enemy.Type == EnemyType.Boss){
-            Debug.Log("Cannot control Boss or Elite enemies.");
+        if (enemy.Type == EnemyType.Boss)
+        {
+            Debug.Log("Cannot control Boss.");
             return;
         }
-        if(enemy.Type == EnemyType.Elite && GameManager.Instance.CurrWave < 5){
+
+        if (enemy.Type == EnemyType.Elite && GameManager.Instance.CurrWave < 5)
             return;
-        }
 
         float dist = Vector2.Distance(transform.position, hit.point);
         if (dist > controlRange)
@@ -92,15 +101,27 @@ public class Player : MonoBehaviour
             return;
         }
 
-        MindControl.Instance.TryControl(enemy);
-        SoundManager.Instance?.PlayPossess(); // plays possess sound
+        PossessionBar bar = hit.collider.GetComponent<PossessionBar>();
+        if (bar == null) return;
+
+        currentTargetBar = bar;
+        currentTargetBar.SetTargeted(true);
+    }
+
+    private void OnPossessCanceled(InputAction.CallbackContext ctx)
+    {
+        if (currentTargetBar != null)
+        {
+            currentTargetBar.SetTargeted(false);
+            currentTargetBar = null;
+        }
     }
 
     private void OnPushBack(InputAction.CallbackContext ctx)
     {
         GameObject attack = Instantiate(pushBackEffect, transform.position, Quaternion.identity);
         Destroy(attack, 3f);
-        SoundManager.Instance?.PlayPushBack(); // plays pushback sound
+        SoundManager.Instance?.PlayPushBack();
     }
 
     public void EnableInput()  => playerInput.Player.Enable();
@@ -118,18 +139,20 @@ public class Player : MonoBehaviour
         {
             health -= 20f;
             Debug.Log("Player damaged with remaining health: " + health);
-            if (SceneManager.GetActiveScene().name == "EndlessMode") EndlessModeUI.Instance.UpdateHealth();
+            if (SceneManager.GetActiveScene().name == "EndlessMode")
+                EndlessModeUI.Instance.UpdateHealth();
         }
         if (health <= 0f)
         {
             Destroy(gameObject);
-            if (SceneManager.GetActiveScene().name == "EndlessMode") EndlessModeUI.Instance.GameOver();
+            if (SceneManager.GetActiveScene().name == "EndlessMode")
+                EndlessModeUI.Instance.GameOver();
         }
     }
 
     public void RegenerateHealth(float amount)
     {
-        // Hook into your health system when ready
+        health = Mathf.Min(maxHealth, health + amount);
     }
 
     public void IncreaseMoveSpeed(float amount)
@@ -141,12 +164,9 @@ public class Player : MonoBehaviour
     {
         maxHealth += bonusHealth;
         regenRate += bonusRegen;
-
     }
 
     public void ResetGame()
     {
-
     }
-
 }
