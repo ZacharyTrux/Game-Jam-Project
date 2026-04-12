@@ -33,7 +33,7 @@ public abstract class Enemy : MonoBehaviour{
     public int slotWeight = 1;
     public float health = 100f;
     public bool isStunned = false;
-    private float stunTimer = 0;
+    public float stunTimer = 0;
 
     protected GameObject player;
     protected GameObject target;
@@ -55,6 +55,7 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected virtual void Update(){
+        HandleStunTimer();
         if(isStunned) return;
     
         switch (State){
@@ -215,6 +216,14 @@ public abstract class Enemy : MonoBehaviour{
                 // Play death animation or effects here
             }
         }        
+    }
+
+    private void HandleStunTimer(){
+        if(!isStunned) return;
+        stunTimer -= Time.deltaTime;
+        if(stunTimer <= 0){
+            isStunned = false;
+        }
     }
 
 /*

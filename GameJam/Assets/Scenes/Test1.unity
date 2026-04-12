@@ -566,7 +566,7 @@ MonoBehaviour:
   - {fileID: 93505995448104935, guid: 5277cc7718b995b4d9b01705cc38aefa, type: 3}
   spawnEnabled: 1
   spawnRate: 1
-  maxEnemies: 5
+  maxEnemies: 8
   minDistance: 5
   maxDistance: 15
   spread: 5
@@ -1186,6 +1186,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002096458}
   m_CullTransparentMesh: 1
+--- !u!1 &1081704702
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1081704704}
+  - component: {fileID: 1081704703}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1081704703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081704702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7a3f3cf58ff6426fb6acf7406c62859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  backgroundMusic: {fileID: 8300000, guid: 1838681d72b394ac38e796e9686b787d, type: 3}
+  bossMusicClip: {fileID: 0}
+  winMusic: {fileID: 8300000, guid: 31fa0bc5e7e784b3286f9b780e477804, type: 3}
+  loseMusic: {fileID: 8300000, guid: e9b97b36459f24d588984fcf65bf1cf1, type: 3}
+  possessSound: {fileID: 0}
+  releasedSound: {fileID: 0}
+  pushBackSound: {fileID: 0}
+  levelUpSound: {fileID: 8300000, guid: 43dbd169901d64d8f92ddc3dc838dc98, type: 3}
+  killSound: {fileID: 0}
+  powerUpControlSound: {fileID: 0}
+  powerUpSpeedSound: {fileID: 0}
+  powerUpDurationSound: {fileID: 0}
+  powerUpXPSound: {fileID: 0}
+  powerUpCooldownSound: {fileID: 0}
+  powerUpPushbackSound: {fileID: 0}
+  meleeAttackSound: {fileID: 8300000, guid: 22eb98ba6d1cf4127a6dd86376d6e9bc, type: 3}
+  rangedAttackSound: {fileID: 8300000, guid: 911e9af30f5e9450993edb561e2dde7c, type: 3}
+  tankAttackSound: {fileID: 0}
+  bossAttackSound: {fileID: 0}
+  enemyDeathSound: {fileID: 0}
+  sfxVolume: 1
+  musicVolume: 0.5
+--- !u!4 &1081704704
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081704702}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 498.1725, y: 267.43723, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1250786532
 GameObject:
   m_ObjectHideFlags: 0
@@ -9792,3 +9858,4 @@ SceneRoots:
   - {fileID: 453178658}
   - {fileID: 348654692}
   - {fileID: 145850099}
+  - {fileID: 1081704704}

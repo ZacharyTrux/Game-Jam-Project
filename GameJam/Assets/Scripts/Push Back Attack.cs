@@ -31,6 +31,7 @@ public class PushBackAttack : MonoBehaviour{
             Enemy enemy = collision.GetComponent<Enemy>();
             if (enemy != null){
                 enemy.isStunned = true;
+                enemy.stunTimer = 2f;
             }
         }
     }
