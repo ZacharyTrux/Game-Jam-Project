@@ -27,6 +27,7 @@ public class XPManager : MonoBehaviour
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
+        DontDestroyOnLoad(this);
     }
 
     private void Start()

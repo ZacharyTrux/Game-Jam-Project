@@ -512,6 +512,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bc29777c33ac24b9f9ec8338fabb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  followCamera: {fileID: 179428989}
+  canvas: {fileID: 300171233}
+  eventSys: {fileID: 1489949715}
+  bossPrefab: {fileID: 4640939702259908014, guid: cd27a16820c120547beaafb5eb9282e5, type: 3}
   waveText: {fileID: 924688254}
 --- !u!4 &145850099
 Transform:
@@ -2514,7 +2518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1081704703
 MonoBehaviour:
   m_ObjectHideFlags: 0

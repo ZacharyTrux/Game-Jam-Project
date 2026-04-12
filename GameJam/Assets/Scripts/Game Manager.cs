@@ -7,6 +7,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    // scene transfer
+    public GameObject followCamera;
+    public GameObject canvas;
+    public GameObject eventSys;
+    public GameObject bossPrefab;
+
+
     public int CurrWave
     {
         get => _currWave;
@@ -37,6 +44,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        DontDestroyOnLoad(followCamera);
+        DontDestroyOnLoad(canvas);
+        DontDestroyOnLoad(eventSys);
     }
 
     void Start()
@@ -54,7 +64,18 @@ public class GameManager : MonoBehaviour
             CurrWave++;
             if (CurrWave % 5 == 0) LevelUpScreen.Instance.ScaleToWave();
 
-            if (CurrWave == 3 && SceneManager.GetActiveScene().name != "EndlessMode") SceneManager.LoadScene("MindPalace");
+            if (CurrWave == 10 && SceneManager.GetActiveScene().name != "EndlessMode")
+            {
+                SceneManager.LoadScene("MindPalace");
+                Player.Instance.DisableInput();
+                Player.Instance.transform.position = Vector2.zero;
+                Player.Instance.EnableInput();
+            }
+            if (CurrWave == 15 && SceneManager.GetActiveScene().name == "MindPalace")
+            {
+                Instantiate(bossPrefab);
+            }
+            
             SetupNextWave();
         }
     }

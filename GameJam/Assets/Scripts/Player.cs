@@ -62,6 +62,7 @@ public class Player : MonoBehaviour
         playerInput.Player.Attack.performed += OnPushBack;
         spriteRenderer = GetComponent<SpriteRenderer>();
         healthBar.maxValue = maxHealth;
+        DontDestroyOnLoad(Camera.main);
     }
 
     void OnDestroy()
