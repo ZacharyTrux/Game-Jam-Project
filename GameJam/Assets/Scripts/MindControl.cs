@@ -40,14 +40,16 @@ public class MindControl : MonoBehaviour
     }
 
     public bool TryControl(Enemy enemy){
-        if (!CanControl) return false;
+        if(enemy == null) return false;
+        if(!CanControl) return false;
 
         controlledEnemies.Add(enemy);
         enemy.MakePossesed();
+        //OnEnemyControlled?.Invoke(enemy);
         return true;
     }
 
-    public void OnEnemyFreed(Enemy enemy)
+    public void ReleaseEnemy(Enemy enemy)
     {
         controlledEnemies.Remove(enemy);
 

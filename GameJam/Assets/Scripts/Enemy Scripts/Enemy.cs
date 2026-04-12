@@ -1,7 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections.Generic;
-using System;
 using UnityEngine.InputSystem;
 
 public enum EnemyState{
@@ -20,7 +19,6 @@ public enum EnemyType{
 }
 
 public abstract class Enemy : MonoBehaviour{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public EnemyState State { get; set; }
     public EnemyType Type { get; set; }
     public bool isPossessed;
@@ -41,6 +39,10 @@ public abstract class Enemy : MonoBehaviour{
     protected Animator animator;
     protected Vector3 groupOffset;
 
+    // The world-space position this enemy has reserved next to its target
+    private Vector3 reservedSlotPosition;
+    private GameObject lastSlotTarget;
+
     protected virtual void Awake(){
        player = GameObject.FindGameObjectWithTag("Player");
        animator = GetComponent<Animator>();
@@ -49,7 +51,6 @@ public abstract class Enemy : MonoBehaviour{
     protected virtual void Start(){
         groupOffset = new Vector3(UnityEngine.Random.Range(-1.5f, 1.5f), UnityEngine.Random.Range(-1.5f, 1.5f), 0);
         State = EnemyState.Targeting;
-        //Type = EnemyType.Melee;
         isPossessed = false;
         lastAttackTime = 0f;
     }
@@ -80,14 +81,20 @@ public abstract class Enemy : MonoBehaviour{
     protected virtual void DecideTarget(){
         target = FindNearestTarget();
         if(target != null){
+            // Reserve a slot when we first pick a target, or if the target changed
+            if(target != lastSlotTarget){
+                ReserveSlotAroundTarget(target);
+            }
             HandleTargeting(target.transform.position);
         }
     }
 
     protected virtual void HandleTargeting(Vector3 targetPosition){
-        MoveTowards(targetPosition);
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed * Time.deltaTime);
-        if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
+        // Move towards the reserved slot, not the target's exact center
+        MoveTowards(reservedSlotPosition);
+
+        // Enter attack state when close enough to the reserved slot
+        if(Vector3.Distance(transform.position, reservedSlotPosition) <= 0.25f){
             State = EnemyState.Attacking;
         }
     }
@@ -106,7 +113,11 @@ public abstract class Enemy : MonoBehaviour{
         State = EnemyState.PlayerControlled;
         gameObject.tag = "Ally";
         isPossessed = true;
+
+        // Release attack slot when becoming possessed
+        ReleaseSlot();
         target = null;
+
         GetComponentInChildren<SpriteRenderer>().color = Color.green;
     }
 
@@ -121,14 +132,14 @@ public abstract class Enemy : MonoBehaviour{
         }
 
         GameObject nearestTarget = null;
-        float minDistance = 50; 
+        float minDistance = 50f; 
         Vector3 currPos = transform.position;
 
-        foreach(string targetTag in targetTags){ // grab valid targets
-            foreach (GameObject target in GameObject.FindGameObjectsWithTag(targetTag)){ // loop through each object on the field with that tag
-                float dist = Vector3.Distance(currPos, target.transform.position); // calculate distance to target
-                if (dist < minDistance){ // closer target found track new target
-                    nearestTarget = target;
+        foreach(string targetTag in targetTags){
+            foreach(GameObject t in GameObject.FindGameObjectsWithTag(targetTag)){
+                float dist = Vector3.Distance(currPos, t.transform.position);
+                if(dist < minDistance){
+                    nearestTarget = t;
                     minDistance = dist;
                 }
             }
@@ -137,11 +148,14 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected virtual void HandleDeath(){
-        XPManager.Instance?.AddKill();  // Increment kill count for XP system
+        XPManager.Instance?.AddKill();
         SoundManager.Instance?.PlayEnemyDeath();
-        SoundManager.Instance?.PlayKill();  // Play kill sound effect
+        SoundManager.Instance?.PlayKill();
         EnemySpawnManager.Instance.enemyCount -= 1;
-        if(isPossessed) MindControl.Instance.controlledEnemies.Remove(this);
+
+        ReleaseSlot();
+        if(isPossessed) MindControl.Instance?.ReleaseEnemy(this);
+
         Destroy(gameObject);
     }
 
@@ -151,85 +165,79 @@ public abstract class Enemy : MonoBehaviour{
             MoveTowards(currPoint.transform.position);
             target = FindNearestTarget();
             if(target != null){
+                if(target != lastSlotTarget) ReserveSlotAroundTarget(target);
                 State = EnemyState.Attacking;
                 return;
             }
         }
         else{
+            ReleaseSlot(); // not targeting anyone, free the slot
             OrbitPlayer();
         }
-
-        // get mouse position
-        // Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-        // Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
-        // mousePos.z = 0; 
-
-        // move towards mouse position
-        //transform.position = Vector3.Lerp(transform.position, mousePos, moveSpeed * Time.deltaTime);        
     }
 
-    protected virtual void OrbitPlayer(){
+    protected void OrbitPlayer(){
         if(player == null) return;
-
         float angle = Time.time * 2f + (gameObject.GetInstanceID() * 0.5f);
-
-        // 2. Calculate the X and Y offsets using Sine and Cosine
         float x = Mathf.Cos(angle) * 2.5f;
         float y = Mathf.Sin(angle) * 2.5f;
-
-        // 3. Create the target position relative to the player
-        Vector3 orbitTarget = player.transform.position + new Vector3(x, y, 0);
-
-        // 4. Move towards that dynamic rotating point
-        MoveTowards(orbitTarget);
+        MoveTowards(player.transform.position + new Vector3(x, y, 0));
     }
 
     protected void RotateTowards(Vector3 position){
-        if(target == null) return;
-
         Vector2 direction = position - transform.position;
-
         SpriteRenderer sprite = GetComponentInChildren<SpriteRenderer>();
-        if(direction.x > 0){
-            sprite.flipX = false;
-        }
-        else if(direction.x < 0){
-            sprite.flipX = true;
-        }
-        //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        if(direction.x > 0) sprite.flipX = false;
+        else if(direction.x < 0) sprite.flipX = true;
     }
 
     protected void ResetState(){
+        // Release slot when abandoning a target
+        ReleaseSlot();
         State = isPossessed ? EnemyState.PlayerControlled : EnemyState.Targeting;
         animator.SetBool("Walking", false);
     }
 
+
+    private void ReserveSlotAroundTarget(GameObject newTarget){
+        // Release old slot first so we don't hold two at once
+        if(lastSlotTarget != null && lastSlotTarget != newTarget)
+            AttackSlotManager.Instance?.ReleaseSlot(lastSlotTarget, this);
+
+        lastSlotTarget = newTarget;
+        reservedSlotPosition = AttackSlotManager.Instance != null
+            ? AttackSlotManager.Instance.ReserveSlot(newTarget, this)
+            : newTarget.transform.position;
+    }
+
+    private void ReleaseSlot(){
+        if(lastSlotTarget != null)
+            AttackSlotManager.Instance?.ReleaseSlot(lastSlotTarget, this);
+        lastSlotTarget = null;
+    }
+
+    protected Vector3 GetAttackStandPosition(){
+        if(target == null) return transform.position;
+        return reservedSlotPosition;
+    }
+
+
     public void OnTriggerEnter2D(Collider2D collision){
         if(collision.gameObject.CompareTag("Attack") && State != EnemyState.Dying){
             GameObject attacker = collision.transform.root.gameObject;
-            Debug.Log("Hit by: " + attacker.name);
             if(gameObject.CompareTag("Ally")){
-                if (attacker.CompareTag("Enemy")){
-                    health -= 20f;
-                }
+                if(attacker.CompareTag("Enemy")) health -= 20f;
             }
             else if(gameObject.CompareTag("Enemy")){
-                if(attacker.CompareTag("Player") || attacker.CompareTag("Ally")){
-                    health -= 20f;
-                }
+                if(attacker.CompareTag("Player") || attacker.CompareTag("Ally")) health -= 20f;
             }
-            if(health <= 0f){
-                State = EnemyState.Dying;
-                // Play death animation or effects here
-            }
+            if(health <= 0f) State = EnemyState.Dying;
         }        
     }
 
     private void HandleStunTimer(){
         if(!isStunned) return;
         stunTimer -= Time.deltaTime;
-        if(stunTimer <= 0){
-            isStunned = false;
-        }
+        if(stunTimer <= 0) isStunned = false;
     }
 }
