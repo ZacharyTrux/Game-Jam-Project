@@ -103,6 +103,7 @@ public abstract class Enemy : MonoBehaviour{
 
     public virtual void TakeDamage(float damage){
         health -= damage;
+        Debug.Log("health - " + health);
         if(health <= 0f && State != EnemyState.Dying){
             State = EnemyState.Dying;
         }
@@ -147,14 +148,17 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected virtual void HandleDeath(){
-        XPManager.Instance?.AddKill();
+        if(isPossessed){
+            MindControl.Instance?.ReleaseEnemy(this);
+        }
+        else{
+            XPManager.Instance?.AddKill();
+            EnemySpawnManager.Instance.enemyCount -= 1;
+        }
+
         SoundManager.Instance?.PlayEnemyDeath();
         SoundManager.Instance?.PlayKill();
-        EnemySpawnManager.Instance.enemyCount -= 1;
-
         ReleaseSlot();
-        if(isPossessed) MindControl.Instance?.ReleaseEnemy(this);
-
         Destroy(gameObject);
         if (Type == EnemyType.Boss)
         {
@@ -170,7 +174,7 @@ public abstract class Enemy : MonoBehaviour{
             target = FindNearestTarget();
             if(target != null){
                 if(target != lastSlotTarget) ReserveSlotAroundTarget(target);
-                State = EnemyState.Attacking;
+                State = EnemyState.Targeting;
                 return;
             }
         }
@@ -229,13 +233,11 @@ public abstract class Enemy : MonoBehaviour{
     public void OnTriggerEnter2D(Collider2D collision){
         if(collision.gameObject.CompareTag("Attack") && State != EnemyState.Dying){
             GameObject attacker = collision.transform.root.gameObject;
-            if(gameObject.CompareTag("Ally")){
-                if(attacker.CompareTag("Enemy")) health -= 20f;
-            }
-            else if(gameObject.CompareTag("Enemy")){
-                if(attacker.CompareTag("Player") || attacker.CompareTag("Ally")) health -= 20f;
-            }
-            if(health <= 0f) State = EnemyState.Dying;
+            bool shouldTakeDamage = 
+            (gameObject.CompareTag("Ally") && attacker.CompareTag("Enemy")) ||
+            (gameObject.CompareTag("Enemy") && (attacker.CompareTag("Player") || attacker.CompareTag("Ally")));
+        
+            if(shouldTakeDamage) TakeDamage(20f);
         }        
     }
 
