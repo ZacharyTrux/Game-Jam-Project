@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public enum EnemyState{
     Targeting,
@@ -159,6 +160,11 @@ public abstract class Enemy : MonoBehaviour{
         SoundManager.Instance?.PlayKill();
         ReleaseSlot();
         Destroy(gameObject);
+        if (Type == EnemyType.Boss)
+        {
+            PlayerPrefs.SetInt("Cleared", 1);
+            SceneManager.LoadScene("WinScreen");
+        }
     }
 
     protected virtual void HandlePossession(){
