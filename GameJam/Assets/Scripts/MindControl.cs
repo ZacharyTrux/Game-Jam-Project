@@ -21,8 +21,7 @@ public class MindControl : MonoBehaviour
     private int maxControlledEnemies = 3;
 
 
-    void Awake()
-    {
+    void Awake(){
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
     }
@@ -45,36 +44,31 @@ public class MindControl : MonoBehaviour
 
         controlledEnemies.Add(enemy);
         enemy.MakePossesed();
-        //OnEnemyControlled?.Invoke(enemy);
         return true;
     }
 
-    public void ReleaseEnemy(Enemy enemy)
-    {
+    public void ReleaseEnemy(Enemy enemy){
         controlledEnemies.Remove(enemy);
 
-        if (controlledEnemies.Count == 0)
-        {
+        if (controlledEnemies.Count == 0){
             OnControlLost?.Invoke();
             TriggerVulnerability();
         }
     }
 
-    private void TriggerVulnerability()
-    {
-    IsVulnerable = true;
-    vulnerabilityTimer = vulnerabilityDuration;
-    SoundManager.Instance?.PlayReleased();
+    private void TriggerVulnerability(){
+        IsVulnerable = true;
+        vulnerabilityTimer = vulnerabilityDuration;
+        SoundManager.Instance?.PlayReleased();
     }
     
 
-    public void increaseMaxControl(int num){
+    public void IncreaseMaxControl(int num){
         maxControlledEnemies += num;
     }
 
 // for the level up feature 
-    public void ResetVulnerability()
-{
+    public void ResetVulnerability(){
     IsVulnerable = false;
     vulnerabilityTimer = 0f;
     OnVulnerabilityTick?.Invoke(0f);

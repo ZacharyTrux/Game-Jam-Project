@@ -71,13 +71,13 @@ public class LevelUpScreen : MonoBehaviour
         switch (choice)
         {
             case "Control +1 Enemy":
-                MindControl.Instance.increaseMaxControl(1);
+                MindControl.Instance.IncreaseMaxControl(1);
                 break;
             case "Control +2 Enemies":
-                MindControl.Instance.increaseMaxControl(2);
+                MindControl.Instance.IncreaseMaxControl(2);
                 break;
             case "Control +3 Enemies":
-                MindControl.Instance.increaseMaxControl(3);
+                MindControl.Instance.IncreaseMaxControl(3);
                 break;
             case "Faster Move Speed":
                 Player.Instance.IncreaseMoveSpeed(1.5f);

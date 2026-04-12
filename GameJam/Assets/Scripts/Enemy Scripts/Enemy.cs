@@ -22,7 +22,6 @@ public abstract class Enemy : MonoBehaviour{
     public EnemyState State { get; set; }
     public EnemyType Type { get; set; }
     public bool isPossessed;
-    public bool canBePossessed;
 
     public LayerMask groundLayer;
     public float moveSpeed = 3.5f;
@@ -43,12 +42,12 @@ public abstract class Enemy : MonoBehaviour{
     private GameObject lastSlotTarget;
 
     protected virtual void Awake(){
-       player = GameObject.FindGameObjectWithTag("Player");
+       player = GameObject.FindGameObjectWithTag("Player"); 
        animator = GetComponent<Animator>();
     }
 
     protected virtual void Start(){
-        groupOffset = new Vector3(UnityEngine.Random.Range(-1.5f, 1.5f), UnityEngine.Random.Range(-1.5f, 1.5f), 0);
+        groupOffset = new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0);
         State = EnemyState.Targeting;
         isPossessed = false;
         lastAttackTime = 0f;
@@ -59,15 +58,15 @@ public abstract class Enemy : MonoBehaviour{
         if(isStunned) return;
     
         switch (State){
-            case EnemyState.Targeting:
+            case EnemyState.Targeting: // find target to charge at
                 DecideTarget();
                 break;
 
-            case EnemyState.Attacking:
+            case EnemyState.Attacking: // attacking state
                 HandleAttacking();
                 break;
 
-            case EnemyState.PlayerControlled:
+            case EnemyState.PlayerControlled: // player now controls them
                 HandlePossession();
                 break;
 
@@ -117,7 +116,7 @@ public abstract class Enemy : MonoBehaviour{
         ReleaseSlot();
         target = null;
 
-        GetComponentInChildren<SpriteRenderer>().color = Color.pink;
+        GetComponentInChildren<SpriteRenderer>().color = Color.deepPink;
     }
 
     protected virtual GameObject FindNearestTarget(){

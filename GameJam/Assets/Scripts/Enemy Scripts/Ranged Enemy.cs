@@ -61,7 +61,7 @@ public class RangedEnemy : Enemy {
 
     private void PerformAttack(){
         if(target == null) return;
-        Vector3 direction = (target.transform.position - transform.position);
+        Vector3 direction = target.transform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion spawnRotation = Quaternion.Euler(0,0, angle);
 

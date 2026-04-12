@@ -13,10 +13,10 @@ public class GameManager : MonoBehaviour{
         }
 
     private int _currWave;
-    private int defaultNextWave = 20;
-    private float spawnRateMultiplier = 0.15f;
-    private float healthPoolIncrease = 0.25f;
-    private float maxEnemyMultiplier = 0.25f;
+    private int defaultNextWave = 10;
+    private float spawnRateMultiplier = 1.15f;
+    private float healthPoolIncrease = 1.25f;
+    private float maxEnemyMultiplier = 1.25f;
     public TextMeshProUGUI waveText;
     
     void Awake(){

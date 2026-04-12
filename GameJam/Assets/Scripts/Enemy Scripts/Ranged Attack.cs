@@ -15,12 +15,9 @@ public class RangedAttack : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        // 1. Ignore the person who fired it
         if (collision.gameObject.CompareTag(ownerTag)) return;
 
-        // 2. Only hit valid targets (If fired by Ally, hit Enemy. If fired by Enemy, hit Ally/Player)
         bool shouldHit = false;
-
         if (ownerTag == "Ally" || ownerTag == "Player") {
             if (collision.CompareTag("Enemy")) shouldHit = true;
         } 
@@ -33,7 +30,7 @@ public class RangedAttack : MonoBehaviour {
             if (enemy != null) {
                 enemy.TakeDamage(damage);
             }
-            Destroy(gameObject); // Destroy arrow on impact
+            Destroy(gameObject); 
         }
     }
 } 

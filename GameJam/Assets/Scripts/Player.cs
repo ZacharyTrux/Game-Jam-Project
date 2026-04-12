@@ -64,8 +64,7 @@ public class Player : MonoBehaviour
         spriteRenderer.flipX = (lastHorizontal > 0);
     }
 
-    private void OnTryPossess(InputAction.CallbackContext ctx)
-    {
+    private void OnTryPossess(InputAction.CallbackContext ctx){
         if (MindControl.Instance == null || !MindControl.Instance.CanControl) return;
 
         Vector2 worldPos = mainCam.ScreenToWorldPoint(
@@ -76,9 +75,11 @@ public class Player : MonoBehaviour
         if (hit.collider == null) return;
         if (!hit.collider.TryGetComponent<Enemy>(out var enemy)) return;
 
-        if (enemy.Type == EnemyType.Boss || enemy.Type == EnemyType.Elite)
-        {
+        if (enemy.Type == EnemyType.Boss){
             Debug.Log("Cannot control Boss or Elite enemies.");
+            return;
+        }
+        if(enemy.Type == EnemyType.Elite && GameManager.Instance.CurrWave < 5){
             return;
         }
 

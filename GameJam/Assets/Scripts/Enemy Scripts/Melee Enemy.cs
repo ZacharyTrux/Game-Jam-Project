@@ -44,21 +44,6 @@ public class MeleeEnemy : Enemy {
         }
     }
 
-    protected override void HandlePossession() {
-        var currPoint = Waypoints.currentWaypoint;
-        if(currPoint != null){ 
-            MoveTowards(currPoint.transform.position);
-            target = FindNearestTarget();
-            if(target != null){
-                State = EnemyState.Attacking;
-                return;
-            }
-        }
-        else{
-            OrbitPlayer();
-        }
-    }
-
     private void PerformAttack(){
         if(target == null) return;
         if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){

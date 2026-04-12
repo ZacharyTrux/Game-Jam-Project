@@ -1,9 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+
+
 
 public class EnemySpawnManager : MonoBehaviour {
+    [System.Serializable]
+    public class EnemyWeightData{
+        public GameObject prefab;
+        public float weight;
+    }
     public static EnemySpawnManager Instance { get; private set; }
-    public List<GameObject> enemies = new();
+    public List<EnemyWeightData> enemiesData = new();
+    private Dictionary<GameObject, float> enemies = new();
     public bool spawnEnabled = true;
     public float spawnRate = 1f;
     public int maxEnemies = 2;
@@ -13,6 +22,7 @@ public class EnemySpawnManager : MonoBehaviour {
     public float spread = 5f;
     private float spawnTimer = 0f;
     public int enemyCount = 0;
+    private float healthMultiplier;
 
     private Camera camera;
 
@@ -28,6 +38,9 @@ public class EnemySpawnManager : MonoBehaviour {
 
     void Start(){
         camera = Camera.main;
+        foreach(var data in enemiesData){
+            enemies.Add(data.prefab, data.weight);
+        }
     }
 
     void Update(){
@@ -40,14 +53,16 @@ public class EnemySpawnManager : MonoBehaviour {
     private void SpawnRandomEnemy(){
         if(!spawnEnabled) return;
         if(enemyCount >= maxEnemies) return;
-
-        // For simplicity, spawn at random position around player
+        
+        List<GameObject> validEnemies = GetValidWavePool();
+        GameObject enemyPrefab = GetRandomEnemy();
         Vector3 randomSpawnPosition = GetRandomPositionBehindCamera();
-        GameObject enemyPrefab = getRandomEnemy();
         if(enemyPrefab != null){
-            Instantiate(enemyPrefab, randomSpawnPosition, Quaternion.identity);
+            GameObject spawnedEnemy = Instantiate(enemyPrefab, randomSpawnPosition, Quaternion.identity);
+            spawnedEnemy.GetComponent<Enemy>().health *= healthMultiplier;
             enemyCount++;
         }
+                
     }
 
     private Vector3 GetRandomPositionBehindCamera(){
@@ -57,38 +72,61 @@ public class EnemySpawnManager : MonoBehaviour {
         float xThreshold = width / 2f;
         float yThreshold = height / 2f;
 
-        float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        float angle = UnityEngine.Random.Range(0f, 360f) * Mathf.Deg2Rad;
         Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 
-        float spawnDistX = xThreshold + Random.Range(minDistance, maxDistance);
-        float spawnDistY = yThreshold + Random.Range(minDistance, maxDistance);
+        float spawnDistX = xThreshold + UnityEngine.Random.Range(minDistance, maxDistance);
+        float spawnDistY = yThreshold + UnityEngine.Random.Range(minDistance, maxDistance);
 
         Vector3 spawnPos = new Vector3(
             camera.transform.position.x + (direction.x * spawnDistX),
             camera.transform.position.y + (direction.y * spawnDistY),
-            0f // Keep Z at 0 for 2D
+            0f 
         );
 
         return spawnPos;
     }
-    private GameObject getRandomEnemy(){
+
+    // random enemy picker algorithm
+    private GameObject GetRandomEnemy(){
         if(enemies.Count == 0){
           return null;   
         }
-        
-        int index = Random.Range(0, enemies.Count);
-        return enemies[index];
-    }
-
-    private void SpawnEnemy(Enemy enemyPrefab, Vector3 position){
-        Instantiate(enemyPrefab, position, Quaternion.identity);
+        float total = 0;
+        foreach(float weight in enemies.Values){
+            total += weight;
+        }
+        float randomVal = UnityEngine.Random.Range(0, total);
+        float cursor = 0;
+        foreach(var enemy in enemies){
+            cursor += enemy.Value;
+            if(randomVal <= cursor){
+                return enemy.Key;
+            }
+        }
+        return null;
     }
 
     public void IncreaseStats(float healthPoolIncrease, float spawnRateMultiplier){
         spawnRate *= spawnRateMultiplier;
-        foreach(GameObject enemy in enemies){
-            var enemyScript = enemy.GetComponent<Enemy>();
-            enemyScript.health += enemyScript.health * healthPoolIncrease;
+        healthMultiplier *= healthPoolIncrease;
+    }
+
+    private List<GameObject> GetValidWavePool(){
+        List<GameObject> pool = new();
+        int currWave = GameManager.Instance.CurrWave;
+        foreach(var enemy in enemies){
+            Enemy e = enemy.Key.GetComponent<Enemy>();
+            if(currWave == 1 && e.Type == EnemyType.Melee){
+                pool.Add(enemy.Key);
+            }
+            else if(currWave == 2 && e.Type == EnemyType.Melee || e.Type == EnemyType.Ranged){
+                pool.Add(enemy.Key);
+            }
+            else if(currWave >= 3){
+                pool.Add(enemy.Key);
+            }
         }
+        return pool;
     }
 }
