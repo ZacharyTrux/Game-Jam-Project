@@ -679,7 +679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7a3f3cf58ff6426fb6acf7406c62859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  backgroundMusic: {fileID: 8300000, guid: 1838681d72b394ac38e796e9686b787d, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: f1e6be496ec144043aa54a5fb4a014c4, type: 3}
   bossMusicClip: {fileID: 8300000, guid: 5eae95ea67ce14fd99237f847f2f5557, type: 3}
   winMusic: {fileID: 8300000, guid: 31fa0bc5e7e784b3286f9b780e477804, type: 3}
   loseMusic: {fileID: 8300000, guid: e9b97b36459f24d588984fcf65bf1cf1, type: 3}
