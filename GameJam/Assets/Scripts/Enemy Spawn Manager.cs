@@ -55,7 +55,7 @@ public class EnemySpawnManager : MonoBehaviour {
         if(enemyCount >= maxEnemies) return;
         
         List<GameObject> validEnemies = GetValidWavePool();
-        GameObject enemyPrefab = GetRandomEnemy();
+        GameObject enemyPrefab = GetRandomEnemy(validEnemies);
         Vector3 randomSpawnPosition = GetRandomPositionBehindCamera();
         if(enemyPrefab != null){
             GameObject spawnedEnemy = Instantiate(enemyPrefab, randomSpawnPosition, Quaternion.identity);
@@ -88,20 +88,20 @@ public class EnemySpawnManager : MonoBehaviour {
     }
 
     // random enemy picker algorithm
-    private GameObject GetRandomEnemy(){
+    private GameObject GetRandomEnemy(List<GameObject> validPool){
         if(enemies.Count == 0){
           return null;   
         }
         float total = 0;
-        foreach(float weight in enemies.Values){
-            total += weight;
+        foreach(GameObject enemy in validPool){
+            total += enemies[enemy];
         }
         float randomVal = UnityEngine.Random.Range(0, total);
         float cursor = 0;
-        foreach(var enemy in enemies){
-            cursor += enemy.Value;
+        foreach(GameObject enemy in validPool){
+            cursor += enemies[enemy];
             if(randomVal <= cursor){
-                return enemy.Key;
+                return enemy;
             }
         }
         return null;
@@ -120,7 +120,7 @@ public class EnemySpawnManager : MonoBehaviour {
             if(currWave == 1 && e.Type == EnemyType.Melee){
                 pool.Add(enemy.Key);
             }
-            else if(currWave == 2 && e.Type == EnemyType.Melee || e.Type == EnemyType.Ranged){
+            else if(currWave == 2 && (e.Type == EnemyType.Melee || e.Type == EnemyType.Ranged)){
                 pool.Add(enemy.Key);
             }
             else if(currWave >= 3){
