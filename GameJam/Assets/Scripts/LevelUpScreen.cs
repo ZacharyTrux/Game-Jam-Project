@@ -39,7 +39,7 @@ public class LevelUpScreen : MonoBehaviour
     public Button[] choiceButtons;
     public TextMeshProUGUI[] choiceLabels;
 
-    // Your teammate hooks into this to scale enemy spawning
+// Took help from Claude and Youtube for Level Up Screen.
     public static event System.Action<int> OnLevelUpConfirmed;
 
     // Upgrade Setup (Scaling Upgrades)
