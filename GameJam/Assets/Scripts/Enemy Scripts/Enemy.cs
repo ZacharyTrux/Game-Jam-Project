@@ -266,6 +266,9 @@ public abstract class Enemy : MonoBehaviour{
             sprite.color = new Color(1,1,1, 1); // increase again to mimic flashing
             yield return new WaitForSeconds(iFrames / 8);
         }
+        if (isPossessed){
+            sprite.color = Color.deepPink;
+        }
 
         isInvincible = false; 
     }
