@@ -640,25 +640,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   backgroundMusic: {fileID: 8300000, guid: 1838681d72b394ac38e796e9686b787d, type: 3}
-  bossMusicClip: {fileID: 0}
+  bossMusicClip: {fileID: 8300000, guid: 5eae95ea67ce14fd99237f847f2f5557, type: 3}
   winMusic: {fileID: 8300000, guid: 31fa0bc5e7e784b3286f9b780e477804, type: 3}
   loseMusic: {fileID: 8300000, guid: e9b97b36459f24d588984fcf65bf1cf1, type: 3}
   possessSound: {fileID: 0}
   releasedSound: {fileID: 0}
   pushBackSound: {fileID: 0}
   levelUpSound: {fileID: 8300000, guid: 43dbd169901d64d8f92ddc3dc838dc98, type: 3}
-  killSound: {fileID: 0}
-  powerUpControlSound: {fileID: 0}
-  powerUpSpeedSound: {fileID: 0}
-  powerUpDurationSound: {fileID: 0}
-  powerUpXPSound: {fileID: 0}
-  powerUpCooldownSound: {fileID: 0}
-  powerUpPushbackSound: {fileID: 0}
+  killSound: {fileID: 8300000, guid: 3185ce6b7f5ac452da45f1091d4aadb0, type: 3}
+  powerUpControlSound: {fileID: 8300000, guid: b7743f52f8ac84802a51257cd7f780b6, type: 3}
+  powerUpSpeedSound: {fileID: 8300000, guid: 4f057af4d2e3140f6bab0640c79c6463, type: 3}
+  powerUpDurationSound: {fileID: 8300000, guid: f08e47f9fdbe045249980f3415043333, type: 3}
+  powerUpXPSound: {fileID: 8300000, guid: 44c71452f609249ec937498a373d546e, type: 3}
+  powerUpCooldownSound: {fileID: 8300000, guid: 32b106186654d476e8a2d0a40998cb13, type: 3}
+  powerUpPushbackSound: {fileID: 8300000, guid: 6ddbc852167c4489e9efa3d348e45744, type: 3}
   meleeAttackSound: {fileID: 8300000, guid: 22eb98ba6d1cf4127a6dd86376d6e9bc, type: 3}
   rangedAttackSound: {fileID: 8300000, guid: 911e9af30f5e9450993edb561e2dde7c, type: 3}
-  tankAttackSound: {fileID: 0}
-  bossAttackSound: {fileID: 0}
-  enemyDeathSound: {fileID: 0}
+  tankAttackSound: {fileID: 8300000, guid: 2ea1685c594534b148150f416118285d, type: 3}
+  bossAttackSound: {fileID: 8300000, guid: a7e10becd0d28486bba67fb3201cb6ad, type: 3}
+  enemyDeathSound: {fileID: 8300000, guid: dccee5ee922cd4ba29a4610ce39c252b, type: 3}
   sfxVolume: 1
   musicVolume: 0.5
 --- !u!4 &171911088
