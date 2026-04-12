@@ -203,7 +203,10 @@ public abstract class Enemy : MonoBehaviour{
         // Release slot when abandoning a target
         ReleaseSlot();
         State = isPossessed ? EnemyState.PlayerControlled : EnemyState.Targeting;
-        animator.SetBool("Walking", false);
+        if(animator != null)
+        {
+            animator.SetBool("Walking", false);    
+        }
     }
 
 
