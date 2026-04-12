@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour{
 
     // Update is called once per frame
     void Update(){
-        if(XPManager.Instance.TotalKills > defaultNextWave){
+        if(XPManager.Instance != null && XPManager.Instance.TotalKills > defaultNextWave){
             CurrWave++;
             SetupNextWave();
         }

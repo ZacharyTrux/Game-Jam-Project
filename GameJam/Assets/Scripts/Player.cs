@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -24,7 +25,8 @@ public class Player : MonoBehaviour
     private Vector2 currentVelocity;
     private Camera mainCam;
 
-    private float health = 100f;
+    public float health = 100f;
+    public float maxHealth = 100f;
     private SpriteRenderer spriteRenderer;
     private float lastHorizontal = 0f;
 
@@ -113,10 +115,12 @@ public class Player : MonoBehaviour
         {
             health -= 20f;
             Debug.Log("Player damaged with remaining health: " + health);
+            if (SceneManager.GetActiveScene().name == "EndlessMode") EndlessModeUI.Instance.UpdateHealth();
         }
         if (health <= 0f)
         {
             Destroy(gameObject);
+            if (SceneManager.GetActiveScene().name == "EndlessMode") EndlessModeUI.Instance.GameOver();
         }
     }
 
