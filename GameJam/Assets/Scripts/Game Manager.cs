@@ -64,14 +64,14 @@ public class GameManager : MonoBehaviour
             CurrWave++;
             if (CurrWave % 5 == 0) LevelUpScreen.Instance.ScaleToWave();
 
-            if (CurrWave == 10 && SceneManager.GetActiveScene().name != "EndlessMode")
+            if (CurrWave == 5 && SceneManager.GetActiveScene().name != "EndlessMode")
             {
                 SceneManager.LoadScene("MindPalace");
                 Player.Instance.DisableInput();
                 Player.Instance.transform.position = Vector2.zero;
                 Player.Instance.EnableInput();
             }
-            if (CurrWave == 15 && SceneManager.GetActiveScene().name == "MindPalace")
+            if (CurrWave == 10 && SceneManager.GetActiveScene().name == "MindPalace")
             {
                 Instantiate(bossPrefab);
             }

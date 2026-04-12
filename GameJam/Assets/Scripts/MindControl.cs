@@ -7,7 +7,7 @@ public class MindControl : MonoBehaviour
     public static MindControl Instance { get; private set; }
 
     [Header("Control Settings")]
-    public float vulnerabilityDuration = 10f;
+    public float vulnerabilityDuration = 5f;
 
     public bool IsVulnerable { get; private set; } = false;
     public bool CanControl => !IsVulnerable && controlledEnemies.Count < maxControlledEnemies;

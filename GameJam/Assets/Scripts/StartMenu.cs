@@ -26,9 +26,9 @@ public class StartMenu : MonoBehaviour
             if (sfxVolumeSlider != null)
                 sfxVolumeSlider.value = SoundManager.Instance.sfxVolume;
         }
-        if (!PlayerPrefs.HasKey("Cleared")) PlayerPrefs.SetInt("Cleared", 0);
-        if (PlayerPrefs.GetInt("Cleared") == 0) endlessModeButton.SetActive(false);
-        else endlessModeButton.SetActive(true);
+        //if (!PlayerPrefs.HasKey("Cleared")) PlayerPrefs.SetInt("Cleared", 0);
+        //if (PlayerPrefs.GetInt("Cleared") == 0) endlessModeButton.SetActive(false);
+        //else endlessModeButton.SetActive(true);
         
     }
 
