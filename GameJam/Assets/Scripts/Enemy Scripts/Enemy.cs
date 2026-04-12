@@ -33,6 +33,7 @@ public abstract class Enemy : MonoBehaviour{
     public int slotWeight = 1;
     public float health = 100f;
     public bool isStunned = false;
+    private float stunTimer = 0;
 
     protected GameObject player;
     protected GameObject target;
@@ -55,10 +56,7 @@ public abstract class Enemy : MonoBehaviour{
 
     protected virtual void Update(){
         if(isStunned) return;
-        else if(Time.time >= 2f){
-            isStunned = false;
-        }
-
+    
         switch (State){
             case EnemyState.Targeting:
                 DecideTarget();
@@ -141,6 +139,7 @@ public abstract class Enemy : MonoBehaviour{
         XPManager.Instance?.AddKill();  // Increment kill count for XP system
         SoundManager.Instance?.PlayEnemyDeath();
         SoundManager.Instance?.PlayKill();  // Play kill sound effect
+        if(isPossessed) MindControl.Instance.controlledEnemies.Remove(this);
         Destroy(gameObject);
     }
 

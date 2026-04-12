@@ -23,6 +23,7 @@ public class EnemySpawnManager : MonoBehaviour {
             return; 
         }
         Instance = this;
+        DontDestroyOnLoad(Instance);
     }
 
     void Start(){
@@ -86,5 +87,13 @@ public class EnemySpawnManager : MonoBehaviour {
 
     private void SpawnEnemy(Enemy enemyPrefab, Vector3 position){
         Instantiate(enemyPrefab, position, Quaternion.identity);
+    }
+
+    public void IncreaseStats(float healthPoolIncrease, float spawnRateMultiplier){
+        spawnRate *= spawnRateMultiplier;
+        foreach(GameObject enemy in enemies){
+            var enemyScript = enemy.GetComponent<Enemy>();
+            enemyScript.health += enemyScript.health * healthPoolIncrease;
+        }
     }
 }
