@@ -155,13 +155,11 @@ public class Player : MonoBehaviour
         health = Mathf.Min(maxHealth, health + amount);
     }
 
-    public void IncreaseMoveSpeed(float amount)
-    {
+    public void IncreaseMoveSpeed(float amount){
         moveSpeed += amount;
     }
 
-    public void IncreaseHealth(float bonusHealth, float bonusRegen)
-    {
+    public void IncreaseHealth(float bonusHealth, float bonusRegen){
         maxHealth += bonusHealth;
         regenRate += bonusRegen;
     }

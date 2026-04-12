@@ -22,7 +22,7 @@ public class EnemySpawnManager : MonoBehaviour {
     public float spread = 5f;
     private float spawnTimer = 0f;
     public int enemyCount = 0;
-    private float healthMultiplier;
+    private float healthMultiplier = 1;
 
     private Camera camera;
 

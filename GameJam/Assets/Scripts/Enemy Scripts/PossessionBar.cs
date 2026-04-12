@@ -18,8 +18,7 @@ public class PossessionBar : MonoBehaviour
 
     void Update()
     {
-        if (!isBeingTargeted)
-        {
+        if (!isBeingTargeted){
             // Drain bar when not targeted
             currentHold = Mathf.Max(0f, currentHold - Time.deltaTime * 2f);
             UpdateFill();
@@ -54,7 +53,7 @@ public class PossessionBar : MonoBehaviour
 
         Enemy enemy = GetComponent<Enemy>();
         if (enemy == null) return;
-        if (enemy.Type == EnemyType.Boss || enemy.Type == EnemyType.Elite) return;
+        if (enemy.Type == EnemyType.Boss) return;
         if (MindControl.Instance == null || !MindControl.Instance.CanControl) return;
 
         MindControl.Instance.TryControl(enemy);
