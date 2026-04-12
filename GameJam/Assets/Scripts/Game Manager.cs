@@ -4,11 +4,15 @@ using TMPro;
 
 public class GameManager : MonoBehaviour{
     public static GameManager Instance {get; private set;}
-    public int currWave { get => currWave;
-            set { currWave = value;
-                waveText.text = "Wave: " + currWave;
+    public int CurrWave { get => _currWave;
+            set { _currWave = value;
+                if(waveText != null){
+                    waveText.text = "Wave: " + _currWave;
                 }
+            }
         }
+
+    private int _currWave;
     private int defaultNextWave = 20;
     private float spawnRateMultiplier = 0.15f;
     private float healthPoolIncrease = 0.25f;
@@ -26,13 +30,14 @@ public class GameManager : MonoBehaviour{
     }
 
     void Start(){
-        currWave = 1;
+        Debug.Log(waveText.text);
+        CurrWave = 1;
     }
 
     // Update is called once per frame
     void Update(){
         if(XPManager.Instance.TotalKills > defaultNextWave){
-            currWave++;
+            CurrWave++;
             SetupNextWave();
         }
     }

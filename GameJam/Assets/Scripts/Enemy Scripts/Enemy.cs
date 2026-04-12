@@ -139,6 +139,7 @@ public abstract class Enemy : MonoBehaviour{
         XPManager.Instance?.AddKill();  // Increment kill count for XP system
         SoundManager.Instance?.PlayEnemyDeath();
         SoundManager.Instance?.PlayKill();  // Play kill sound effect
+        EnemySpawnManager.Instance.enemyCount -= 1;
         if(isPossessed) MindControl.Instance.controlledEnemies.Remove(this);
         Destroy(gameObject);
     }
