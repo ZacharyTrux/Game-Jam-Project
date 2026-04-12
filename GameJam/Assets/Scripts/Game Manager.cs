@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour{
     public static GameManager Instance {get; private set;}
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour{
         if(XPManager.Instance != null && XPManager.Instance.TotalKills > defaultNextWave){
             CurrWave++;
             if (CurrWave % 5 == 0) LevelUpScreen.Instance.ScaleToWave();
+            if (CurrWave == 21 && SceneManager.GetActiveScene().name != "EndlessMode") SceneManager.LoadScene("MindPalace");
             SetupNextWave();
         }
     }
