@@ -1,3 +1,5 @@
+//used Claude AI for this additional script.
+
 using UnityEngine;
 
 public class CheatCodes : MonoBehaviour
