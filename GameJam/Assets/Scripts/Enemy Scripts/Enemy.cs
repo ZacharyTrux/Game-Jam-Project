@@ -112,12 +112,12 @@ public abstract class Enemy : MonoBehaviour{
         State = EnemyState.PlayerControlled;
         gameObject.tag = "Ally";
         isPossessed = true;
+        EnemySpawnManager.Instance.enemyCount -= 1; // ensure another enemy spawns after possessing one
 
-        // Release attack slot when becoming possessed
         ReleaseSlot();
         target = null;
 
-        GetComponentInChildren<SpriteRenderer>().color = Color.green;
+        GetComponentInChildren<SpriteRenderer>().color = Color.pink;
     }
 
     protected virtual GameObject FindNearestTarget(){
