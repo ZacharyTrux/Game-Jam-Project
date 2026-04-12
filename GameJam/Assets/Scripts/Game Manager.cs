@@ -19,10 +19,11 @@ public class GameManager : MonoBehaviour
     }
 
     private int _currWave;
-    private int defaultNextWave = 20;
+
+    private int defaultNextWave = 3;
     private float spawnRateMultiplier = 1.15f;
     private float healthPoolIncrease = 1.25f;
-    private float maxEnemyMultiplier = 1.25f;
+    private float maxEnemyMultiplier = 1f;
     public TextMeshProUGUI waveText;
 
     void Awake()
@@ -52,8 +53,8 @@ public class GameManager : MonoBehaviour
         {
             CurrWave++;
             if (CurrWave % 5 == 0) LevelUpScreen.Instance.ScaleToWave();
-            if (CurrWave == 21 && SceneManager.GetActiveScene().name != "EndlessMode")
-                SceneManager.LoadScene("MindPalace");
+
+            if (CurrWave == 3 && SceneManager.GetActiveScene().name != "EndlessMode") SceneManager.LoadScene("MindPalace");
             SetupNextWave();
         }
     }

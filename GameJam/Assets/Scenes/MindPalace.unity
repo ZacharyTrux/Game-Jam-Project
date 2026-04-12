@@ -4253,6 +4253,7 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   regenRate: 10
+  healthBar: {fileID: 1426326371}
   damage: 0
 --- !u!212 &1235541329
 SpriteRenderer:

@@ -734,58 +734,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndlessModeUI
   gameOverPanel: {fileID: 970075129}
   healthBar: {fileID: 1847713545}
---- !u!1 &348654690
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 348654692}
-  - component: {fileID: 348654691}
-  m_Layer: 0
-  m_Name: Enemy Spawn Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &348654691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 348654690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24cbd56c3d19318439669d1782f1e90d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnManager
-  enemiesData: []
-  spawnEnabled: 1
-  spawnRate: 1
-  maxEnemies: 8
-  minDistance: 5
-  maxDistance: 15
-  spread: 5
-  enemyCount: 0
---- !u!4 &348654692
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 348654690}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &453178656
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,6 +920,64 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 483559869}
   m_CullTransparentMesh: 1
+--- !u!1 &523032159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 523032161}
+  - component: {fileID: 523032160}
+  m_Layer: 0
+  m_Name: '[[ Enemy Spawn Manager ]] '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &523032160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523032159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24cbd56c3d19318439669d1782f1e90d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnManager
+  enemiesData:
+  - prefab: {fileID: 93505995448104935, guid: 5277cc7718b995b4d9b01705cc38aefa, type: 3}
+    weight: 50
+  - prefab: {fileID: 8730726245684181756, guid: a8772e984816fe041afbc4bec74c301a, type: 3}
+    weight: 30
+  - prefab: {fileID: 4994574112388676231, guid: 80252c293d254334e966630cd969507a, type: 3}
+    weight: 20
+  spawnEnabled: 1
+  spawnRate: 1
+  maxEnemies: 8
+  minDistance: 5
+  maxDistance: 10
+  spread: 3
+  enemyCount: 0
+--- !u!4 &523032161
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523032159}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &558114453
 GameObject:
   m_ObjectHideFlags: 0
@@ -11964,6 +11970,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6603452305428283183, guid: 83123358e1240b24f9a2181aee6ddb84, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 1847713545}
     - target: {fileID: 6693736977081223671, guid: 83123358e1240b24f9a2181aee6ddb84, type: 3}
       propertyPath: m_Name
       value: Player
@@ -11985,6 +11995,6 @@ SceneRoots:
   - {fileID: 300171234}
   - {fileID: 179428993}
   - {fileID: 453178658}
-  - {fileID: 348654692}
   - {fileID: 145850099}
   - {fileID: 1081704704}
+  - {fileID: 523032161}

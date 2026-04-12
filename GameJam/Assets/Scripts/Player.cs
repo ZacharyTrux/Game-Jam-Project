@@ -1,6 +1,8 @@
+using System.Net;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -29,6 +31,8 @@ public class Player : MonoBehaviour
     public float maxHealth = 100f;
     public float regenRate = 10f;
 
+    public Slider healthBar;
+
     private SpriteRenderer spriteRenderer;
     private float lastHorizontal = 0f;
     public int damage = 0;
@@ -55,6 +59,7 @@ public class Player : MonoBehaviour
         playerInput.Player.Possess.canceled += OnPossessCanceled;
         playerInput.Player.Attack.performed += OnPushBack;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        healthBar.maxValue = maxHealth;
     }
 
     void OnDestroy()
@@ -62,6 +67,16 @@ public class Player : MonoBehaviour
         playerInput.Player.Possess.started  -= OnPossessStarted;
         playerInput.Player.Possess.canceled -= OnPossessCanceled;
         playerInput.Player.Attack.performed -= OnPushBack;
+    }
+
+    private void Update()
+    {
+        if(health < maxHealth)
+        {
+            health += regenRate * Time.deltaTime;
+            health = Mathf.Min(health, maxHealth);
+        }
+        healthBar.value = health;
     }
 
     void FixedUpdate()
@@ -139,8 +154,8 @@ public class Player : MonoBehaviour
         {
             health -= 20f;
             Debug.Log("Player damaged with remaining health: " + health);
-            if (SceneManager.GetActiveScene().name == "EndlessMode")
-                EndlessModeUI.Instance.UpdateHealth();
+            //if (SceneManager.GetActiveScene().name == "EndlessMode")
+                //EndlessModeUI.Instance.UpdateHealth();
         }
         if (health <= 0f)
         {
@@ -162,6 +177,7 @@ public class Player : MonoBehaviour
     public void IncreaseHealth(float bonusHealth, float bonusRegen){
         maxHealth += bonusHealth;
         regenRate += bonusRegen;
+        healthBar.maxValue = maxHealth;
     }
 
     public void ResetGame()
