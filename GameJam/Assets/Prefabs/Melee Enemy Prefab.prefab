@@ -149,13 +149,13 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  moveSpeed: 3.5
+  moveSpeed: 1.5
   attackRange: 1.5
   attackCooldown: 1
   slotWeight: 1
   health: 100
   isStunned: 0
-  stunTimer: 0
+  stunTimer: 2
 --- !u!1 &345736798926345472
 GameObject:
   m_ObjectHideFlags: 0

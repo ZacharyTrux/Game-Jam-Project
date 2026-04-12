@@ -12,6 +12,12 @@ public class RangedEnemy : Enemy {
     }
 
     protected override void MoveTowards(Vector3 position) {
+        if(State == EnemyState.Attacking){
+            animator.SetBool("Walking", false);
+            return;
+        }
+
+        animator.SetBool("Walking", true);
         transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
         RotateTowards(position);
     }
@@ -25,7 +31,7 @@ public class RangedEnemy : Enemy {
         float dist = Vector3.Distance(transform.position, target.transform.position);
         if(dist <= attackRange){
             RotateTowards(target.transform.position);
-            if (dist > attackRange) { 
+            if (dist < attackRange) { 
                 transform.position = Vector3.MoveTowards(transform.position, target.transform.position, (moveSpeed * 0.5f) * Time.deltaTime);
             }
             if(Time.time >= lastAttackTime + attackCooldown){
@@ -53,20 +59,13 @@ public class RangedEnemy : Enemy {
         }
     }
 
-    private void OrbitPlayer() {
-        if (player == null) return;
-        float angle = Time.time * 2f + (gameObject.GetInstanceID() * 0.5f);
-        Vector3 orbitOffset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 2.5f;
-        MoveTowards(player.transform.position + orbitOffset);
-    }
-
     private void PerformAttack(){
         if(target == null) return;
-        if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
-            GameObject projectile =Instantiate(attackProjectilePrefab, gameObject.transform.position, gameObject.transform.rotation);
-            projectile.GetComponent<RangedAttack>().ownerTag = gameObject.tag;
-            //target.Health.TakeDamage(10f);
-        }
-        
+        Vector3 direction = (target.transform.position - transform.position);
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion spawnRotation = Quaternion.Euler(0,0, angle);
+
+        GameObject projectile = Instantiate(attackProjectilePrefab, transform.position, spawnRotation);
+        projectile.GetComponent<RangedAttack>().ownerTag = gameObject.tag;
     }
 }

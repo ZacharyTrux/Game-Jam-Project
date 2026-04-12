@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 795449431004348591}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.313, y: 0, z: 0}
+  m_LocalPosition: {x: 0.514, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -176,14 +176,14 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  moveSpeed: 3.5
+  moveSpeed: 1.3
   attackRange: 5
   attackCooldown: 1
   slotWeight: 2
   health: 100
   isStunned: 0
-  stunTimer: 0
-  attackProjectilePrefab: {fileID: 218921146362464158, guid: 78f6ed2f1d91a174cb54f12b6a67cb86, type: 3}
+  stunTimer: 2
+  attackProjectilePrefab: {fileID: 3972465287539094305, guid: a9b6d0519191ab446a5d6740cc78dc30, type: 3}
 --- !u!50 &5920389666140399104
 Rigidbody2D:
   serializedVersion: 5

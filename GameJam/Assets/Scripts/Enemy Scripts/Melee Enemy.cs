@@ -4,13 +4,20 @@ using UnityEngine;
 public class MeleeEnemy : Enemy {
     protected override void Awake() {
         base.Awake();
+    }
+
+    protected override void Start(){
+        base.Start();
         Type = EnemyType.Melee;
         slotWeight = 1;
-        Debug.Log("melee enemy awaked " + State);
     }
 
     protected override void MoveTowards(Vector3 position) {
-        animator.SetTrigger("Walking");
+        if(State == EnemyState.Attacking){
+            animator.SetBool("Walking", false);
+            return;
+        }
+        animator.SetBool("Walking", true);
         transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
         RotateTowards(position);
     }
@@ -52,18 +59,11 @@ public class MeleeEnemy : Enemy {
         }
     }
 
-    private void OrbitPlayer() {
-        if (player == null) return;
-        float angle = Time.time * 2f + (gameObject.GetInstanceID() * 0.5f);
-        Vector3 orbitOffset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 2.5f;
-        MoveTowards(player.transform.position + orbitOffset);
-    }
-
     private void PerformAttack(){
         if(target == null) return;
         if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
+            animator.SetBool("Walking", false);
             animator.SetTrigger("Attack");
-            //target.Health.TakeDamage(10f);
         }
         
     }

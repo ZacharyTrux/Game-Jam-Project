@@ -564,6 +564,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnManager
   enemies:
   - {fileID: 93505995448104935, guid: 5277cc7718b995b4d9b01705cc38aefa, type: 3}
+  - {fileID: 4994574112388676231, guid: 80252c293d254334e966630cd969507a, type: 3}
+  - {fileID: 8730726245684181756, guid: a8772e984816fe041afbc4bec74c301a, type: 3}
   spawnEnabled: 1
   spawnRate: 1
   maxEnemies: 8
@@ -1202,7 +1204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1081704703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1235,7 +1237,7 @@ MonoBehaviour:
   tankAttackSound: {fileID: 0}
   bossAttackSound: {fileID: 0}
   enemyDeathSound: {fileID: 0}
-  sfxVolume: 1
+  sfxVolume: 0
   musicVolume: 0.5
 --- !u!4 &1081704704
 Transform:

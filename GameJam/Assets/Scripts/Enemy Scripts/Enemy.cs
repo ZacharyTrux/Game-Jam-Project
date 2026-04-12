@@ -85,6 +85,7 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected virtual void HandleTargeting(Vector3 targetPosition){
+        MoveTowards(targetPosition);
         transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed * Time.deltaTime);
         if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
             State = EnemyState.Attacking;
@@ -132,7 +133,6 @@ public abstract class Enemy : MonoBehaviour{
                 }
             }
         }
-        print(nearestTarget);
         return nearestTarget;
     }
 
@@ -168,7 +168,7 @@ public abstract class Enemy : MonoBehaviour{
         //transform.position = Vector3.Lerp(transform.position, mousePos, moveSpeed * Time.deltaTime);        
     }
 
-    private void OrbitPlayer(){
+    protected virtual void OrbitPlayer(){
         if(player == null) return;
 
         float angle = Time.time * 2f + (gameObject.GetInstanceID() * 0.5f);
@@ -201,6 +201,7 @@ public abstract class Enemy : MonoBehaviour{
 
     protected void ResetState(){
         State = isPossessed ? EnemyState.PlayerControlled : EnemyState.Targeting;
+        animator.SetBool("Walking", false);
     }
 
     public void OnTriggerEnter2D(Collider2D collision){
@@ -231,99 +232,4 @@ public abstract class Enemy : MonoBehaviour{
             isStunned = false;
         }
     }
-
-/*
-    private void HandleTargeting(GameObject target){
-        // Move towards the target and check for attack range
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed * Time.deltaTime);
-        if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
-            State = EnemyState.Attacking;
-        }
-    }
-
-    private void HandleAttacking(){
-        if(target == null){
-            ResetState();
-            return;
-        }
-
-        float dist = Vector3.Distance(transform.position, target.transform.position);
-        if(dist <= attackRange){
-            RotateTowardsTarget(target.transform.position);
-            if (dist > 0.5f) { 
-                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, (moveSpeed * 0.5f) * Time.deltaTime);
-            }
-            if(Time.time >= lastAttackTime + attackCooldown){
-                PerformAttack();
-                lastAttackTime = Time.time;
-            }
-        }
-        else{
-            ResetState();
-        }
-    }
-
-    
-
-    
-    
-
-    
-
-    
-        // else if(Type == EnemyType.Ranged){
-        //     // Instantiate projectile towards target
-        //     Debug.Log("Ranged attack towards " + target.name);
-        //     // GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        //     // projectile.GetComponent<Projectile>().Initialize(target.transform);
-        // }
-        // else if(Type == EnemyType.Brute){
-        //     // Stronger melee attack with knockback
-        //     if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
-        //         Debug.Log("Brute attack hits " + target.name);
-        //         // target.GetComponent<Health>()?.TakeDamage(20f);
-        //         // Apply knockback logic here
-        //     }
-        // }
-    }
-
-    public void MoveTowards(Vector3 position){
-        transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
-        RotateTowardsTarget(position);
-    }
-
-    private void RotateTowardsTarget(Vector3 position){
-        if(target == null) return;
-
-        Vector2 direction = position - transform.position;
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
-    }
-
-    
-
-    
-
-    public void OnTriggerEnter2D(Collider2D collision){
-        if(collision.gameObject.CompareTag("Attack") && State != EnemyState.Dying){
-            GameObject attacker = collision.transform.root.gameObject;
-            Debug.Log("Hit by: " + attacker.name);
-            if(gameObject.CompareTag("Ally")){
-                if (attacker.CompareTag("Enemy")){
-                    health -= 20f;
-                }
-            }
-            else if(gameObject.CompareTag("Enemy")){
-                if(attacker.CompareTag("Player") || attacker.CompareTag("Ally")){
-                    health -= 20f;
-                }
-            }
-            if(health <= 0f){
-                State = EnemyState.Dying;
-                // Play death animation or effects here
-            }
-        }
-    }
-    */
 }

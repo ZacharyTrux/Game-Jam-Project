@@ -2,7 +2,13 @@ using System;
 using UnityEngine;
 
 public class EliteEnemy : Enemy {
-    public EliteEnemy() {
+
+    protected override void Awake(){
+        base.Awake();
+    }
+
+    protected override void Start() {
+        base.Start();
         Type = EnemyType.Elite;
         health = 200f;
         attackRange = 1.5f;
@@ -10,6 +16,7 @@ public class EliteEnemy : Enemy {
     }
 
     protected override void MoveTowards(Vector3 position) {
+        animator.SetBool("Walking", true);
         transform.position = Vector3.MoveTowards(transform.position, position, moveSpeed * Time.deltaTime);
         RotateTowards(position);
     }
@@ -25,6 +32,10 @@ public class EliteEnemy : Enemy {
             RotateTowards(target.transform.position);
             if (dist > 0.5f) { 
                 transform.position = Vector3.MoveTowards(transform.position, target.transform.position, (moveSpeed * 0.5f) * Time.deltaTime);
+                animator.SetBool("Walking", true);
+            }
+            else{
+                animator.SetBool("Walking", false);
             }
             if(Time.time >= lastAttackTime + attackCooldown){
                 PerformAttack();
@@ -36,33 +47,11 @@ public class EliteEnemy : Enemy {
         }
     }
 
-    protected override void HandlePossession() {
-        var currPoint = Waypoints.currentWaypoint;
-        if(currPoint != null){ 
-            MoveTowards(currPoint.transform.position);
-            target = FindNearestTarget();
-            if(target != null){
-                State = EnemyState.Attacking;
-                return;
-            }
-        }
-        else{
-            OrbitPlayer();
-        }
-    }
-
-    private void OrbitPlayer() {
-        if (player == null) return;
-        float angle = Time.time * 2f + (gameObject.GetInstanceID() * 0.5f);
-        Vector3 orbitOffset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 2.5f;
-        MoveTowards(player.transform.position + orbitOffset);
-    }
-
     private void PerformAttack(){
         if(target == null) return;
         if(Vector3.Distance(transform.position, target.transform.position) <= attackRange){
+            animator.SetBool("Walking", false);
             animator.SetTrigger("Attack");
-            //target.Health.TakeDamage(10f);
         }
         
     }
