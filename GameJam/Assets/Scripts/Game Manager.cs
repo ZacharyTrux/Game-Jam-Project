@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour{
     void Start(){
         Debug.Log(waveText.text);
         CurrWave = 1;
+        Time.timeScale = 1f;
+        Player.Instance.EnableInput();
     }
 
     // Update is called once per frame
